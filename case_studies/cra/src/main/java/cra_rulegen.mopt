@@ -9,7 +9,7 @@ goal {
 	constraint MinimiseClasslessFeatures java { "models.cra.fitness.MinimiseClasslessFeatures" }
 }
 search { 
-	mutate {"Class"}
+	mutate {"Class "}
 }
 solver {
 	optimisation provider moea algorithm NSGAII {
