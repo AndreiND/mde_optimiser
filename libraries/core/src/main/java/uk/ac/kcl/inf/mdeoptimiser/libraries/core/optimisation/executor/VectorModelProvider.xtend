@@ -18,26 +18,29 @@ class VectorModelProvider implements IModelProvider {
 	IModelInitialiser modelInitialiser;
 	VectorConverter vectorConverter;
 	
-	new (HenshinResourceSet resourceSet, String userModelPath, VectorConverter vc){
+	new (HenshinResourceSet rs, String userModelPath, VectorConverter vc){
 		this.modelPath = userModelPath;
-		this.resourceSet = resourceSet;
-		this.model = resourceSet.createResource(this.modelPath).allContents.head
+		this.resourceSet = rs;
+		println("RESOURCE SET INIT: " + resourceSet)
+		
+		// println("MODEL INSIDE MODELPROVIDER: " + this.model)
 		vectorConverter = vc
 		
 	}
 
 
 	def Solution loadModel(String path) {
-//		val resource = resourceSet.createResource(path)
-//		
-//		resource.load(Collections.EMPTY_MAP)
-//		resource.allContents.head
+		println("Path: " + path)
+		val resource = resourceSet.createResource(path)
+		println("Resource: " + resource)
+		resource.load(Collections.EMPTY_MAP)
+		resource.allContents.head
 //		
 //		if(this.modelInitialiser !== null){
 //			return modelInitialiser.initialise(resource.allContents.head)
 //		}
-		
-		return new Solution(vectorConverter.convert(this.model))
+		println("MODEL INSIDE MODELPROVIDER: " + resource.allContents.head)
+		return new Solution(vectorConverter.convert(resource.allContents.head))
 	}
 
 	override initialModels(EPackage metamodel) {

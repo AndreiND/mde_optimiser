@@ -50,14 +50,9 @@ class OptimisationInterpreter {
 	new (String projectPath, Optimisation model){
 		this.model = model;
 		this.projectRootPath = new Path(projectPath);
-		val newResourcePath = projectRootPath + "/" + model.problem.basepath.location
-		println("GET RESOURCE SET: " + getResourceSet(newResourcePath))
 		val ss = model.search as SearchSpecImpl;
 		val rgs = ss.eGet(2, true, false) as EList<RulegenSpec>;
-		println("MODEL SEARCH RULEGEN: " + rgs.get(0));
-		println("MODEL NODE SPEC: " + rgs.get(0).getNodeSpec());
-		println("MODEL EDGE SPEC: " + rgs.get(0).getEdgeSpec());
-		vectorConverter = new VectorConverter(this.getMetamodel, rgs.get(0))
+		this.vectorConverter = new VectorConverter(this.getMetamodel, rgs.get(0))
 	}
 
 	def Instrumenter start() {
@@ -82,7 +77,6 @@ class OptimisationInterpreter {
 	}
 
 	def IModelProvider getModelProvider(){
-		println("MODEL INITIALISER: " + model.problem.modelInitialiser)
 		Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put(
     	"nrp", new XMIResourceFactoryImpl());
 		if (vectorFlag != "vector") {

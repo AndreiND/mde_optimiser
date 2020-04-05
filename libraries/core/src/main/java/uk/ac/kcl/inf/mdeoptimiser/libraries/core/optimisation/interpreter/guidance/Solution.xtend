@@ -1,10 +1,11 @@
 package uk.ac.kcl.inf.mdeoptimiser.libraries.core.optimisation.interpreter.guidance
 
-import org.eclipse.emf.ecore.EObject
-import org.eclipse.emf.ecore.util.EcoreUtil
 import java.util.LinkedList
 import java.util.List
 import java.util.Map
+import org.eclipse.emf.ecore.EObject
+import org.eclipse.emf.ecore.EReference
+import org.eclipse.emf.ecore.util.EcoreUtil
 
 class Solution {
 	

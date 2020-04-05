@@ -1,11 +1,11 @@
 package uk.ac.kcl.inf.mdeoptimiser.libraries.core.optimisation.vector
 
-import org.apache.commons.lang3.StringUtils
 import org.eclipse.emf.ecore.EClass
 import org.eclipse.emf.ecore.EClassifier
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EPackage
 import org.eclipse.emf.ecore.EReference
+import org.eclipse.emf.ecore.impl.DynamicEObjectImpl
 import uk.ac.kcl.inf.mdeoptimiser.languages.mopt.RulegenSpec
 
 class VectorConverter {
@@ -13,11 +13,11 @@ class VectorConverter {
 	RulegenSpec rulegenSpec;
 	EClass vectorNode;
 	EReference vectorEdge;
+	EObject vectorTarget;
 	
 	new(EPackage metamodel, RulegenSpec rulegenSpec)  {
 		this.metamodel = metamodel;
 		this.rulegenSpec = rulegenSpec;
-		println("INSIDE RULEGENSPEC: " + rulegenSpec);
 	}
 	
 	def isVectorisable() {
@@ -61,8 +61,6 @@ class VectorConverter {
 			if (ec instanceof EClass) {
 				val eClass = ec as EClass
 				if (node.getName.equals(ec.getName)) {
-					println("EClassifier matching the node has been found!")
-					println("EClass: " + ec.getName + "\nReferences: ")
 					for (EReference eref : eClass.getEReferences) {
 						refsFromNode.add(eref)
 					}
@@ -78,11 +76,11 @@ class VectorConverter {
 			}
 		}
 		
-		println("refsFromNode: " + refsFromNode)
-		println("refsToNode: " + refsToNode)
+//		println("refsFromNode: " + refsFromNode)
+//		println("refsToNode: " + refsToNode)
 		val opposite = refsFromNode.get(0).getEOpposite
 		
-		if (refsFromNode.size > 1 || refsToNode.size > 1 || !(refsFromNode.isEmpty && refsToNode.isEmpty)) {
+		if (refsFromNode.size > 0 || refsToNode.size > 0) {
 			if (nodeSpec !== null) {
 				
 				if (refsFromNode.size == 1 && refsToNode.size == 1) {
@@ -144,14 +142,15 @@ class VectorConverter {
 		return false
 	}
 	
-	def EObject convert(EObject model) {
-		var initialModel = model;
+	
+	
+	
+	def VectorEObject convert(EObject model) {
+		var initialModel = model as DynamicEObjectImpl;
+		var VectorEObject vectorObject = null;
 		val nodeSpec = this.rulegenSpec.getNodeSpec;
 		val edgeSpec = this.rulegenSpec.getEdgeSpec;
-		
-		println("INSIDE NodeSpec: " + nodeSpec);
-		println("INSIDE EdgeSpec: " + edgeSpec);
-		
+	
 		println("isVectorisable(): " + isVectorisable)
 		println("vectorNode: " + this.vectorNode)
 		println("VectorEdge: " + this.vectorEdge)
@@ -162,23 +161,36 @@ class VectorConverter {
 		}
 		
 		if (isVectorisable) {
+			var EReference target;
 			for (EClassifier ec : this.metamodel.getEClassifiers) {
 				if (ec instanceof EClass) {
-				val eClass = ec as EClass
+					val eClass = ec as EClass
 					for (EReference eref : eClass.getEReferences) {
-						if (eref.getEReferenceType.equals(vectorNode.getName) && eref.isContainment) {
-							var list = eref.getEContainingClass.eGet(eref)
-							println("Feature List: " + list)
+						if (eref.getEReferenceType.getName.equals(vectorNode.getName) && eref.isContainment && initialModel.eGet(eref) !== null) {
+							target = eref;
 						}
 					}
 				}
 			}
-		
 			
+			if (!target.isChangeable) {
+				target.setChangeable(true)
+			}
+			
+			if (target.isUnsettable) {
+				target.setUnsettable(false)
+			}
+			
+			this.vectorTarget = initialModel.eClass
+			
+			println("Target: " + vectorEdge)
+			println("Container: " + vectorEdge.eContainer)
+			vectorTarget = target.eContainer
+			vectorObject = new VectorEObject(initialModel, target, vectorEdge, this.rulegenSpec.getNodeSpec.getNode)	
 		} else {
 			println("Not able to vectorise given the current settings")
 		}
 		
-		return null;
+		return vectorObject
 	}
 }
