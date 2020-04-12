@@ -1,9 +1,13 @@
 package uk.ac.kcl.inf.mdeoptimiser.libraries.core.optimisation.operators.mutation
 
+import org.eclipse.emf.ecore.EClass
+import org.eclipse.emf.ecore.EPackage
+import org.eclipse.emf.ecore.EReference
+import uk.ac.kcl.inf.mdeoptimiser.languages.mopt.AlgorithmSpec
+import uk.ac.kcl.inf.mdeoptimiser.languages.mopt.Parameter
+import uk.ac.kcl.inf.mdeoptimiser.languages.mopt.RulegenSpec
 import uk.ac.kcl.inf.mdeoptimiser.libraries.core.optimisation.interpreter.henshin.HenshinExecutor
 import uk.ac.kcl.inf.mdeoptimiser.libraries.core.optimisation.operators.adaptation.MutationStepSizeStrategy
-import uk.ac.kcl.inf.mdeoptimiser.languages.mopt.Parameter
-import uk.ac.kcl.inf.mdeoptimiser.languages.mopt.AlgorithmSpec
 import uk.ac.kcl.inf.mdeoptimiser.libraries.core.optimisation.operators.mutation.selection.RandomOperatorSelector
 
 class MutationStrategyFactory {
@@ -12,12 +16,26 @@ class MutationStrategyFactory {
 	MutationStrategy mutationStrategy
 	MutationStepSizeStrategy mutationStepSizeStrategy
 	Parameter mutationStrategyParameter
+	RulegenSpec rgs
+	EReference vectorEdge
+	EClass node;
+	EPackage metamodel;
 	
 	new(HenshinExecutor henshinExecutor, MutationStepSizeStrategy mutationStepSizeStrategy,
 		AlgorithmSpec algorithmSpec) {
 		this.henshinExecutor = henshinExecutor;
 		this.mutationStepSizeStrategy = mutationStepSizeStrategy
 		this.mutationStrategyParameter = getMutationStrategyParameter(algorithmSpec)
+	}
+	
+	new(HenshinExecutor henshinExecutor, MutationStepSizeStrategy mutationStepSizeStrategy, AlgorithmSpec algorithmSpec, RulegenSpec rgs, EReference vectorEdge, EClass node, EPackage metamodel) {
+		this.henshinExecutor = henshinExecutor;
+		this.mutationStepSizeStrategy = mutationStepSizeStrategy
+		this.mutationStrategyParameter = getMutationStrategyParameter(algorithmSpec)
+		this.rgs = rgs
+		this.vectorEdge = vectorEdge;
+		this.node = node;
+		this.metamodel = metamodel
 	}
 	
 	/**
@@ -49,6 +67,10 @@ class MutationStrategyFactory {
 				//Manual Henshin Matching Strategy
 				case "manual": {
 					return new ManualMatchingMutationStrategy(this.henshinExecutor, this.mutationStepSizeStrategy)
+				}
+				
+				case "VectorRandom" : {
+					return new VectorRandomOperatorMutationStrategy(this.mutationStepSizeStrategy, this.rgs, this.vectorEdge, this.node, this.metamodel)
 				}
 			}
 		}

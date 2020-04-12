@@ -2,10 +2,14 @@ package uk.ac.kcl.inf.mdeoptimiser.libraries.core.optimisation.executor
 
 import java.util.Iterator
 import java.util.List
+import org.eclipse.emf.common.util.EList
+import org.eclipse.emf.ecore.EClass
 import org.eclipse.emf.ecore.EPackage
+import org.eclipse.emf.ecore.EReference
 import org.eclipse.emf.henshin.model.Unit
 import uk.ac.kcl.inf.mdeoptimiser.languages.mopt.Optimisation
 import uk.ac.kcl.inf.mdeoptimiser.languages.mopt.RulegenSpec
+import uk.ac.kcl.inf.mdeoptimiser.languages.mopt.impl.SearchSpecImpl
 import uk.ac.kcl.inf.mdeoptimiser.libraries.core.optimisation.IModelProvider
 import uk.ac.kcl.inf.mdeoptimiser.libraries.core.optimisation.interpreter.evolvers.parameters.EvolverParametersFactory
 import uk.ac.kcl.inf.mdeoptimiser.libraries.core.optimisation.interpreter.guidance.Solution
@@ -15,7 +19,6 @@ import uk.ac.kcl.inf.mdeoptimiser.libraries.core.optimisation.operators.crossove
 import uk.ac.kcl.inf.mdeoptimiser.libraries.core.optimisation.operators.crossover.CrossoverStrategyFactory
 import uk.ac.kcl.inf.mdeoptimiser.libraries.core.optimisation.operators.mutation.MutationStrategy
 import uk.ac.kcl.inf.mdeoptimiser.libraries.core.optimisation.operators.mutation.MutationStrategyFactory
-import uk.ac.kcl.inf.mdeoptimiser.libraries.core.optimisation.vector.VectorConverter
 
 class SolutionGenerator {
 
@@ -33,7 +36,13 @@ class SolutionGenerator {
 
 	MutationStepSizeStrategy mutationStepSizeStrategy;
 	
-	RulegenSpec ruleSpecs;
+	EReference vectorEdge;
+	
+	EClass node;
+	
+	boolean vector = false;
+	
+//	RulegenSpec ruleSpecs;
 	
 	new(Optimisation model, List<Unit> breedingOperators, List<Unit> mutationOperators, IModelProvider modelProvider,
 		EPackage metamodel) {
@@ -49,11 +58,14 @@ class SolutionGenerator {
 		println("MUTATION OPERATORS: " + mutationOperators);
 	}
 	
-	new(Optimisation model, IModelProvider modelProvider, EPackage metamodel) {
+	new(Optimisation model, IModelProvider modelProvider, EPackage metamodel, EReference vectorEdge, EClass node) {
 		this.optimisationModel = model
 		this.initialModelProvider = modelProvider
-		this.theMetamodel = metamodel;
-		this.ruleSpecs = model.search.rulegen.get(0);
+		this.theMetamodel = metamodel
+		this.vector = true
+		this.vectorEdge = vectorEdge
+		this.node = node
+//		this.ruleSpecs = model.search.rulegen.get(0);
 	}
 
 	/**
@@ -68,16 +80,24 @@ class SolutionGenerator {
 
 	// TODO IOC
 	def getMutationStrategy() {
-
-		if (this.mutationStrategy === null) {
-			this.mutationStrategy = new MutationStrategyFactory(henshinExecutor, this.mutationStepSizeStrategy,
-				optimisationModel.solver.algorithm).getStrategy()
+		if (!vector) {
+			if (this.mutationStrategy === null) {
+				this.mutationStrategy = new MutationStrategyFactory(henshinExecutor, this.mutationStepSizeStrategy,
+					optimisationModel.solver.algorithm).getStrategy()
+			}
+		} else {
+			val ss = optimisationModel.search as SearchSpecImpl;
+			val rgs = ss.eGet(2, true, false) as EList<RulegenSpec>;
+			if (this.mutationStrategy === null) {
+				this.mutationStrategy = new MutationStrategyFactory(henshinExecutor, this.mutationStepSizeStrategy,
+					optimisationModel.solver.algorithm, rgs.get(0), this.vectorEdge, this.node, theMetamodel).getStrategy()
+			}
 		}
 
 		return this.mutationStrategy
 
 	}
-
+	
 	def getCrossoverStrategy() {
 
 		if (this.crossoverStrategy === null) {

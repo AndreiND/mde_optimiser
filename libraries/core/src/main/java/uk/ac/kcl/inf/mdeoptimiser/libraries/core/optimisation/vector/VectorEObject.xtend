@@ -15,38 +15,43 @@ class VectorEObject extends DynamicEObjectImpl {
 	// target is the containment reference that holds a list of the objects to be vectorised
 	// (target can be an empty list and in this case we should initialise an empty vector)
 	EReference target;
+	EClass baseClass;
 	// relation is the reference that represents the relationship being modelled by the vector
-	EReference relation
+	EReference relation;
 	ArrayList<Integer> gene;
 	// vectorMap maps Objects to the indices of the gene vector
 	Map<Integer, EObject> vectorMap = new HashMap<Integer, EObject>;
 	// baseEObjectMap maps the target of the modelled relationship to an integer so it can be expressed numerically in the vector
 	Map<EObject, Integer> baseEObjectMap = new HashMap<EObject, Integer>;
 	EList<DynamicEObjectImpl> eObjectList;
+	int keyCounter;
 	String vectorNode;
 	boolean dynamic = false
 	
-	new(DynamicEObjectImpl m, EReference target, EReference relation, String nodeClass) {
+	new(DynamicEObjectImpl m, EReference target, EReference relation, String nodeClass, EClass baseClass) {
 		this.model = m
 		this.target = target
 		this.relation = relation
 		this.vectorNode = nodeClass
+		this.baseClass = baseClass
 		this.eObjectList = this.model.eGet(this.target) as EList<DynamicEObjectImpl>
 		this.gene = newArrayList
 		for (index:eObjectList) {
 			gene.add(null)
 		}
-		
-		println("Reference list: " + eObjectList)
-		println("Reference: " + this.relation)
-		println("Reference type: " + this.relation.getEReferenceType)
-		println("Reference container" + this.relation.eContainer)
+//		NOTE TO SELF - THE RELATION AT THE END OF THE 0..1 RELATIONSHIP MUST BE THE ONE BEING MUTATED OTHERWISE THE CHROMOSOME WILL NOT HAVE A FIXED LENGTH AND SO WE CANNOT PERFORM BREEDING ON THESE SOLUTIONS
+//		THE DYNAMIC CASE DOES HOWEVER WORK FOR JUST MUTATION SO I WILL MAKE IT WORK FOR THAT, AND IF WE DO BREEDING THE SYSTEM SHOULD CHECK DYNAMIC AND RETURN THAT IT IS NOT POSSIBLE 		
+//		println("Reference list: " + eObjectList)
+//		println("Reference: " + this.relation)
+//		println("Reference type: " + this.relation.getEReferenceType)
+//		println("Reference container" + this.relation.eContainer)
 		
 		isDynamic
 		mapEObjects
 		getNodes
 		fillVector
 		constructModelFromVector
+		if (!dynamic) {keyCounter = baseEObjectMap.size}
 		
 	}
 	
@@ -81,8 +86,8 @@ class VectorEObject extends DynamicEObjectImpl {
 			println("Inside loop")
 			if (dynamic) {
 				println("DYNAMIC")
-				println("Obj eClass getName: " + obj.eClass.getName)
-				println("Relation ereftype getName: " + relation.getEReferenceType.getName)
+//				println("Obj eClass getName: " + obj.eClass.getName)
+//				println("Relation ereftype getName: " + relation.getEReferenceType.getName)
 				if (matchesEClassName(relation.getEReferenceType.getName, obj.eClass)) {
 					baseEObjectMap.put(obj, counter)
 					counter++
@@ -102,24 +107,24 @@ class VectorEObject extends DynamicEObjectImpl {
 	def fillVector() {
 		println("INSIDE FILLVECTOR: ")
 
-		for (entry: vectorMap.entrySet) {
+		for (entry : vectorMap.entrySet) {
 			if (entry.getValue.eGet(relation) === null) {
-				println("VectorMap: " + vectorMap)
-				println("Gene: " + gene)
+//				println("VectorMap: " + vectorMap)
+//				println("Gene: " + gene)
 				gene.set(entry.getKey, null)
 			} else {
 				// Lookup the relevant eObject in the baseEObjectMap and assign it's relevant integer to the gene
 				val objFromVectorMap = entry.getValue.eGet(relation)
 				val objFromBaseMap = baseEObjectMap.get(objFromVectorMap)
-				println("objFromVectorMap: " + objFromVectorMap)
-				println("objFromBaseMap: " + objFromBaseMap)
+//				println("objFromVectorMap: " + objFromVectorMap)
+//				println("objFromBaseMap: " + objFromBaseMap)
 				gene.set(entry.getKey, objFromBaseMap)
 			}
 		}
 
-		println("BaseEObjectMap: " + baseEObjectMap)
-		println("vectorMap: " + vectorMap)
-		println("gene: " + gene)
+//		println("BaseEObjectMap: " + baseEObjectMap)
+//		println("vectorMap: " + vectorMap)
+//		println("gene: " + gene)
 	}
 	
 	def constructModelFromVector() {
@@ -146,19 +151,30 @@ class VectorEObject extends DynamicEObjectImpl {
 				list.add(type.getName)
 			}
 		}
-		println("LIST: " + list)
+//		println("LIST: " + list)
 		return list
 	}
 	
 	def boolean matchesEClassName(String name, EClass ec) {
-		println("NAME: " + name)
-		println("CLASS NAME: " + ec.getName)
-		for (type:allClassNames(ec)) {
+//		println("NAME: " + name)
+//		println("CLASS NAME: " + ec.getName)
+		for (type : allClassNames(ec)) {
 			if (name.equals(type)) {
 				return true
 			}
 		}
 		return false
+	}
+	
+	def void newVectorObject(DynamicEObjectImpl n) {
+		if (dynamic) {
+			vectorMap.put(gene.size, n)
+			gene.add(null)
+		} else {
+			(model.eGet(target) as EList<DynamicEObjectImpl>).add(n)
+			baseEObjectMap.put(n, keyCounter)
+			keyCounter++
+		}
 	}
 	
 	def DynamicEObjectImpl getModel() {

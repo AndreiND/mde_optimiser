@@ -53,6 +53,8 @@ class RandomOperatorMutationStrategy implements MutationStrategy {
 				operator = this.operatorSelectionDecorator.nextOperator
 
 				if (operator !== null) {
+					println("Operators Applying: ")
+					println("Operator: " + operator)
 					if (henshinExecutor.operatorApplied(operator, egraph, candidateSolution)) {
 						stepTransformations.put(step, operator.name)
 						operatorApplied = true;

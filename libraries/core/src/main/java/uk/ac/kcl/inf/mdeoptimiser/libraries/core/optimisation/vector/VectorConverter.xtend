@@ -13,7 +13,7 @@ class VectorConverter {
 	RulegenSpec rulegenSpec;
 	EClass vectorNode;
 	EReference vectorEdge;
-	EObject vectorTarget;
+	EClass baseClass;
 	
 	new(EPackage metamodel, RulegenSpec rulegenSpec)  {
 		this.metamodel = metamodel;
@@ -76,8 +76,6 @@ class VectorConverter {
 			}
 		}
 		
-//		println("refsFromNode: " + refsFromNode)
-//		println("refsToNode: " + refsToNode)
 		val opposite = refsFromNode.get(0).getEOpposite
 		
 		if (refsFromNode.size > 0 || refsToNode.size > 0) {
@@ -92,11 +90,13 @@ class VectorConverter {
 					if (refsFromNode.get(0).getUpperBound == 1) {
 						this.vectorNode = node
 						this.vectorEdge = refsFromNode.get(0)
+						this.baseClass = refsFromNode.get(0).getEReferenceType
 						return true
 					} else if (!refsToNode.isEmpty) {
 						if (refsToNode.get(0).getUpperBound == 1) {
 							this.vectorNode = refsToNode.get(0).getEContainingClass
 							this.vectorEdge = refsToNode.get(0)
+							this.baseClass = node
 							return true
 						}
 					}
@@ -104,6 +104,7 @@ class VectorConverter {
 					if (refsToNode.get(0).getUpperBound == 1) {
 						this.vectorNode = refsToNode.get(0).getEContainingClass
 						this.vectorEdge = refsToNode.get(0)
+						this.baseClass = node
 						return true
 					}
 				}
@@ -115,11 +116,13 @@ class VectorConverter {
 						if (refsFromNode.get(0).getUpperBound == 1) {
 							this.vectorNode = node
 							this.vectorEdge = refsFromNode.get(0)
+							this.baseClass = refsFromNode.get(0).getEReferenceType
 							return true
 						} else if (opposite !== null) {
 							if (opposite.getUpperBound == 1) {
 								this.vectorNode = opposite.getEContainingClass
 								this.vectorEdge = opposite
+								this.baseClass = node
 								return true
 							}
 						}
@@ -128,32 +131,42 @@ class VectorConverter {
 							if (refsToNode.get(0).getUpperBound == 1) {
 								this.vectorNode = refsToNode.get(0).getEContainingClass
 								this.vectorEdge = refsToNode.get(0)
+								this.baseClass = node
 								return true
+							} else if (opposite !== null) {
+								if (opposite.getUpperBound == 1) {
+									this.vectorNode = opposite.getEContainingClass
+									this.vectorEdge = opposite
+									this.baseClass = opposite.getEReferenceType
+									return true
+								}
 							}
 						}
 					}
-				} else if (refsToNode.get(0).getUpperBound == 1) {
-					this.vectorNode = refsToNode.get(0).getEContainingClass
-					this.vectorEdge = refsToNode.get(0)
-					return true
+				} else if (refsToNode.get(0).getName.equals(edge)){
+					if (refsToNode.get(0).getUpperBound == 1) {
+						this.vectorNode = refsToNode.get(0).getEContainingClass
+						this.vectorEdge = refsToNode.get(0)
+						this.baseClass = node
+						return true
+					}
 				}
 			}
 		}
 		return false
 	}
 	
-	
-	
-	
 	def VectorEObject convert(EObject model) {
 		var initialModel = model as DynamicEObjectImpl;
 		var VectorEObject vectorObject = null;
 		val nodeSpec = this.rulegenSpec.getNodeSpec;
 		val edgeSpec = this.rulegenSpec.getEdgeSpec;
-	
-		println("isVectorisable(): " + isVectorisable)
-		println("vectorNode: " + this.vectorNode)
-		println("VectorEdge: " + this.vectorEdge)
+		
+		
+		
+//		println("isVectorisable(): " + isVectorisable)
+//		println("vectorNode: " + this.vectorNode)
+//		println("VectorEdge: " + this.vectorEdge)
 		
 		if (nodeSpec === null && edgeSpec === null || this.rulegenSpec === null) {
 			println("No rulegen found")
@@ -181,16 +194,35 @@ class VectorConverter {
 				target.setUnsettable(false)
 			}
 			
-			this.vectorTarget = initialModel.eClass
-			
-			println("Target: " + vectorEdge)
-			println("Container: " + vectorEdge.eContainer)
-			vectorTarget = target.eContainer
-			vectorObject = new VectorEObject(initialModel, target, vectorEdge, this.rulegenSpec.getNodeSpec.getNode)	
+			vectorObject = new VectorEObject(initialModel, target, vectorEdge, this.rulegenSpec.getNodeSpec.getNode, this.baseClass)
 		} else {
 			println("Not able to vectorise given the current settings")
 		}
 		
 		return vectorObject
+	}
+	
+	def getNodeSpecNode() {
+		
+		val nodeSpec = this.rulegenSpec.getNodeSpec
+		val edgeSpec = this.rulegenSpec.getEdgeSpec
+		
+		for (EClassifier ec : this.metamodel.getEClassifiers) {
+			if (nodeSpec !== null) {
+				if (ec.getName.equals(nodeSpec.getNode)) {
+					return ec as EClass
+				}
+			}
+				
+			if (edgeSpec !== null) {
+				if (ec.getName.equals(edgeSpec.getNode)) {
+					return ec as EClass
+				}
+			}	
+		}
+	}
+	
+	def EReference getVectorEdge() {
+		return this.vectorEdge
 	}
 }
