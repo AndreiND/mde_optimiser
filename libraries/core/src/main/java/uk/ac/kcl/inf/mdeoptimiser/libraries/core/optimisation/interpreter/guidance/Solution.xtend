@@ -4,8 +4,8 @@ import java.util.LinkedList
 import java.util.List
 import java.util.Map
 import org.eclipse.emf.ecore.EObject
-import org.eclipse.emf.ecore.EReference
 import org.eclipse.emf.ecore.util.EcoreUtil
+import uk.ac.kcl.inf.mdeoptimiser.libraries.core.optimisation.vector.VectorEObject
 
 class Solution {
 	
@@ -27,7 +27,17 @@ class Solution {
 	}
 	
 	def getModel() {
+		if (model instanceof VectorEObject) {
+			return model.getModel
+		}
 		return model;
+	}
+	
+	def VectorEObject getVectorModel() {
+		if (model instanceof VectorEObject) {
+			return model
+		}
+		return null
 	}
 	
 	def setModel(EObject model, List<String> transformations){

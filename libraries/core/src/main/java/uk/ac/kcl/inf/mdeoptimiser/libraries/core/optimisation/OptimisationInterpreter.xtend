@@ -64,13 +64,24 @@ class OptimisationInterpreter {
 											getMutationOperators,
 											getModelProvider,
 											getMetamodel);
+		
 		val metamodel = getMetamodel
 		println("Metamodel: " + metamodel);
 		println("Metamodel EClassifiers: " + metamodel.getEClassifiers);
+		println("Model Evolvers: " + model.search.evolvers)
 		return new MoeaOptimisation().execute(model.solver, solutionGenerator)
 		} else {
+			for (rule: getMutationOperators) {
+				println("Rule: " + rule)
+//				println("Rule getParameters: " + rule.getParameters)
+//				println("Rule getParameterMappings: " + rule.getParameterMappings)
+//				println("Rule isActivated: " + rule.isActivated)
+//				println("Rule getModule: " + rule.getModule)
+			}
+			println("ProjectRootPath: " + projectRootPath)
 			println("Vector implementation goes here");
-			var solutionGenerator = new SolutionGenerator(model, getModelProvider, getMetamodel);
+			println("NodespecNode: " + vectorConverter.getNodeSpecNode)
+			var solutionGenerator = new SolutionGenerator(model, getModelProvider, getMetamodel, vectorConverter.getVectorEdge, vectorConverter.getNodeSpecNode);
 			return new MoeaOptimisation().execute(model.solver, solutionGenerator)
 		}
 		

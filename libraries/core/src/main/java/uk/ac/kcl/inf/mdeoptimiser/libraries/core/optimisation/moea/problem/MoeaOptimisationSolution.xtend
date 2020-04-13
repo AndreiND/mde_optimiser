@@ -24,6 +24,9 @@ class MoeaOptimisationSolution extends Solution {
 		)
 		this.solutionGenerator = solutionGenerator;
 		setModel(solutionGenerator.mutate(solutionGenerator.initialSolutions.head))
+		println("MODEL INSIDE MOEAOPTIMISATIONSOLUTION: " + model)
+		println("MODEL INSIDE MOEAOPTIMISATIONSOLUTION GETMODEL: " + getModel)
+		println("MODEL INSIDE MOEAOPTIMISATIONSOLUTION GETMODEL GETMODEL: " + getModel.getModel)
 	}
 	
 	override MoeaOptimisationSolution copy(){

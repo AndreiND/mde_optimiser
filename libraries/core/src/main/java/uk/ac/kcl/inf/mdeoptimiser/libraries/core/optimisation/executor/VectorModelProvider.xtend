@@ -31,10 +31,11 @@ class VectorModelProvider implements IModelProvider {
 		println("Resource: " + resource)
 		resource.load(Collections.EMPTY_MAP)
 		resource.allContents.head
-//		
-//		if(this.modelInitialiser !== null){
-//			return modelInitialiser.initialise(resource.allContents.head)
-//		}
+		
+		
+		if(this.modelInitialiser !== null){
+			return modelInitialiser.initialise(resource.allContents.head)
+		}
 		println("MODEL INSIDE MODELPROVIDER: " + resource.allContents.head)
 		return new Solution(vectorConverter.convert(resource.allContents.head))
 	}

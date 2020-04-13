@@ -66,6 +66,7 @@ class SolutionGenerator {
 		this.vectorEdge = vectorEdge
 		this.node = node
 //		this.ruleSpecs = model.search.rulegen.get(0);
+		println("How many SolutionGenerators are there? " + this)
 	}
 
 	/**
@@ -89,7 +90,7 @@ class SolutionGenerator {
 			val ss = optimisationModel.search as SearchSpecImpl;
 			val rgs = ss.eGet(2, true, false) as EList<RulegenSpec>;
 			if (this.mutationStrategy === null) {
-				this.mutationStrategy = new MutationStrategyFactory(henshinExecutor, this.mutationStepSizeStrategy,
+				this.mutationStrategy = new MutationStrategyFactory(this.mutationStepSizeStrategy,
 					optimisationModel.solver.algorithm, rgs.get(0), this.vectorEdge, this.node, theMetamodel).getStrategy()
 			}
 		}

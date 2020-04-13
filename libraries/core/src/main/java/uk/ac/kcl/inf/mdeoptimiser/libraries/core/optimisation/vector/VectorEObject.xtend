@@ -1,7 +1,9 @@
 package uk.ac.kcl.inf.mdeoptimiser.libraries.core.optimisation.vector
 
 import java.util.ArrayList
+import java.util.Collections
 import java.util.HashMap
+import java.util.Iterator
 import java.util.Map
 import org.eclipse.emf.common.util.EList
 import org.eclipse.emf.ecore.EClass
@@ -68,9 +70,9 @@ class VectorEObject extends DynamicEObjectImpl {
 	}
 	
 	def isDynamic() {
-		println("INSIDE ISDYNAMIC: ")
-		println("Relation eClass name: " + relation.eContainer)
-		println("VectorNode name: " + vectorNode)
+//		println("INSIDE ISDYNAMIC: ")
+//		println("Relation eClass name: " + relation.eContainer)
+//		println("VectorNode name: " + vectorNode)
 		val containerClass = relation.eContainer as EClass
 		if (containerClass.getName.equals(vectorNode)) {
 			println("This is dynamic!")
@@ -79,9 +81,9 @@ class VectorEObject extends DynamicEObjectImpl {
 	}
 	
 	def void getNodes() {
-		println("INSIDE GETNODES: ")
+//		println("INSIDE GETNODES: ")
 		var counter = 0
-		println("MODEL ECONTENTS: " + model.eContents)
+//		println("MODEL ECONTENTS: " + model.eContents)
 		for (EObject obj : model.eContents) {
 			println("Inside loop")
 			if (dynamic) {
@@ -127,7 +129,7 @@ class VectorEObject extends DynamicEObjectImpl {
 //		println("gene: " + gene)
 	}
 	
-	def constructModelFromVector() {
+	def constructModelFromVector() {	
 		val flippedEObjectMap = new HashMap<Integer, EObject>
 		for (entry:baseEObjectMap.entrySet) {
 			flippedEObjectMap.put(entry.getValue, entry.getKey)
@@ -166,23 +168,126 @@ class VectorEObject extends DynamicEObjectImpl {
 		return false
 	}
 	
-	def void newVectorObject(DynamicEObjectImpl n) {
+	def void addNewVectorObject(DynamicEObjectImpl n) {
 		if (dynamic) {
+			addToBaseClassContainmentReference(n)
 			vectorMap.put(gene.size, n)
 			gene.add(null)
 		} else {
-			(model.eGet(target) as EList<DynamicEObjectImpl>).add(n)
-			baseEObjectMap.put(n, keyCounter)
-			keyCounter++
+			if (!this.baseEObjectMap.isEmpty) {
+				(model.eGet(target) as EList<DynamicEObjectImpl>).add(n)
+				var boolean inserted = false
+	
+				var ArrayList<Integer> valueList = newArrayList
+				for (entry : this.baseEObjectMap.entrySet) {
+					valueList.add(entry.getValue)
+				}
+				val maxValue = Collections.max(valueList)
+				println("ValueList: " + valueList)
+				val allValues = newArrayList
+				for (var i = 0; i <= maxValue;i++) {
+					allValues.add(i)
+				}
+				val Iterator<Integer> itr = allValues.iterator
+				while(itr.hasNext && inserted == false) {
+					val value = itr.next
+					if (!valueList.contains(value)) {
+						println("Inserting value: " + value)
+						this.baseEObjectMap.put(n, value)
+						inserted = true
+					}
+				}
+				
+				if (!inserted) {
+					println("Inserting value: " + maxValue + 1)
+					this.baseEObjectMap.put(n, maxValue + 1)
+				}
+				
+			} else {
+				this.baseEObjectMap.put(n, 0)
+			}
+			
+
+			addToBaseClassContainmentReference(n)
+//			baseEObjectMap.put(n, keyCounter)
+//			keyCounter++
 		}
 	}
+	
+	def void deleteVectorObject(DynamicEObjectImpl n) {
+		if (dynamic) {
+			for (entry : vectorMap.entrySet) {
+				// FILL OUT THIS IMPLEMENTATION IF I HAVE TIME
+				if (entry.value.equals(n)) {
+					vectorMap.replace(entry.getKey, null)
+					fillVector
+				}
+				
+			}
+		} else {
+			baseEObjectMap.remove(n)
+			deleteFromBaseClassContainmentReference(n)
+			fillVector()
+		}
+	}
+	
+	def void addToBaseClassContainmentReference(DynamicEObjectImpl n) {
+		for (eref:model.eClass.getEReferences) {
+			if (eref.getEReferenceType.getName.equals(this.baseClass.getName)) {
+				(model.eGet(eref) as EList<DynamicEObjectImpl>).add(n)
+			}
+		}
+		for(obj : model.eContents) {
+			for(eref : obj.eClass.getEReferences) {
+				if (eref.getEReferenceType.getName.equals(this.baseClass.getName)) {
+					(obj.eGet(eref) as EList<DynamicEObjectImpl>).add(n)
+				}
+			}
+		}
+	}
+	
+	def void deleteFromBaseClassContainmentReference(DynamicEObjectImpl n) {
+		for (eref:model.eClass.getEReferences) {
+			if (eref.getEReferenceType.getName.equals(this.baseClass.getName)) {
+				(model.eGet(eref) as EList<DynamicEObjectImpl>).remove(n)
+			}
+		}
+		for(obj : model.eContents) {
+			for(eref : obj.eClass.getEReferences) {
+				if (eref.getEReferenceType.getName.equals(this.baseClass.getName)) {
+					(obj.eGet(eref) as EList<DynamicEObjectImpl>).remove(n)
+				}
+			}
+		}
+	}
+	
+	def baseEObjectMapToString() {
+		var toReturn = "["
+		for (entry : baseEObjectMap.entrySet) {
+			
+			toReturn += "(" + entry.getKey.eClass.getName + ", " + entry.getValue + "), "
+		}
+		toReturn += "]"
+		return toReturn
+	}
+	
+	def vectorMapToString() {
+		var toReturn = "["
+		for (entry : vectorMap.entrySet) {
+			
+			toReturn += "(" + entry.getKey + ", " + entry.getValue.eClass.getName + "), "
+		}
+		toReturn += "]"
+		return toReturn
+	}
+	
 	
 	def DynamicEObjectImpl getModel() {
 		return this.model
 	}
 	
-	def ArrayList<Integer> getVector() {
-		return this.vector
+	def ArrayList<Integer> getGene() {
+		return this.gene
 	}
 	
 	def getVectorMap() {
@@ -192,4 +297,23 @@ class VectorEObject extends DynamicEObjectImpl {
 	def getBaseEObjectMap() {
 		return this.baseEObjectMap
 	}
+	
+	def getBaseClass() {
+		return this.baseClass
+	}
+	
+	def getTarget() {
+		return this.target
+	}
+	
+	def getKeyCounter() {
+		return this.keyCounter
+	}
+	
+	def incrementKeyCounter() {
+		keyCounter++
+	}
+	
+	
+	
 }

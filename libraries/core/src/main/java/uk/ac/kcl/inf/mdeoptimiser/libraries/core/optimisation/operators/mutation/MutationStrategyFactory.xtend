@@ -28,8 +28,7 @@ class MutationStrategyFactory {
 		this.mutationStrategyParameter = getMutationStrategyParameter(algorithmSpec)
 	}
 	
-	new(HenshinExecutor henshinExecutor, MutationStepSizeStrategy mutationStepSizeStrategy, AlgorithmSpec algorithmSpec, RulegenSpec rgs, EReference vectorEdge, EClass node, EPackage metamodel) {
-		this.henshinExecutor = henshinExecutor;
+	new(MutationStepSizeStrategy mutationStepSizeStrategy, AlgorithmSpec algorithmSpec, RulegenSpec rgs, EReference vectorEdge, EClass node, EPackage metamodel) {
 		this.mutationStepSizeStrategy = mutationStepSizeStrategy
 		this.mutationStrategyParameter = getMutationStrategyParameter(algorithmSpec)
 		this.rgs = rgs
