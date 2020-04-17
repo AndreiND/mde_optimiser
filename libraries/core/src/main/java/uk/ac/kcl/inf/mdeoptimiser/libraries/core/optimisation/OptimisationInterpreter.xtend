@@ -63,12 +63,9 @@ class OptimisationInterpreter {
 		val rgs = ss.eGet(2, true, false) as EList<RulegenSpec>;
 		this.vectorConverter = new VectorConverter(this.getMetamodel, rgs.get(0))
 		this.deleteCondition = model.solver.algorithm.parameters.filter[p| p.name.equals("deleteCondition")].head.getValue.getFunctional
-		println("DELETE CONDITION: " + deleteCondition)
 		if (model.solver.algorithm.parameters.filter[p| p.name.equals("vector")].head.getValue.getFunctional.equals("yes")) {
 			this.vectorFlag = true
-		}
-		println("VECTORFLAG: " + model.solver.algorithm.parameters.filter[p| p.name.equals("vector")].head.getValue.getFunctional)
-		
+		}		
 	}
 
 	def Instrumenter start() {
@@ -201,7 +198,6 @@ class OptimisationInterpreter {
  				multiplicityRefinements.add(new Multiplicity(refinement.node, refinement.edge, refinement.lowerBound, refinement.upperBound, getMetamodel));
  			]
  		}
-		println("Multiplicity Refinements" + multiplicityRefinements)
  		return multiplicityRefinements;
     }
 
@@ -223,12 +219,6 @@ class OptimisationInterpreter {
  				}
  			]
  		}
-		println("RULESPECS: " + ruleSpecs);
-		for (RuleSpec rs : ruleSpecs) {
-			println("RuleSpec Node: " + rs.getNode())
-			println("RuleSpec Edge: " + rs.getEdge())
-			println("RuleSpec Actions: " + rs.getActions())
-		}
     	return ruleSpecs;
     }
 
