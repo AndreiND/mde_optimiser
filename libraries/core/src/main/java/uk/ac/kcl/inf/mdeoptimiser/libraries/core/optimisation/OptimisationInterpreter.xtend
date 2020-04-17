@@ -246,7 +246,6 @@ class OptimisationInterpreter {
 	    	var mutations = new RulesGenerator(getMetamodel, multiplicityRefinements, rulegenSpecs);
 
 	    	this.generatedOperators = mutations.generateRules;
-	    	println("GENERATED OPERATORS MATCHING PACKAGES TO HENSHIN MODULES:" + this.generatedOperators);
  		}
 
  		return this.generatedOperators
