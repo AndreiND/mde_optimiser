@@ -4,7 +4,9 @@ import java.util.LinkedList
 import java.util.List
 import java.util.Map
 import org.eclipse.emf.ecore.EObject
+import org.eclipse.emf.ecore.impl.DynamicEObjectImpl
 import org.eclipse.emf.ecore.util.EcoreUtil
+import uk.ac.kcl.inf.mdeoptimiser.libraries.core.optimisation.vector.VectorConverter
 import uk.ac.kcl.inf.mdeoptimiser.libraries.core.optimisation.vector.VectorEObject
 
 class Solution {
@@ -26,6 +28,12 @@ class Solution {
 		this.transformationsChain = new LinkedList<Map<Integer, String>>(solution.getTransformationsChain);
 	}
 	
+	new (Solution solution, VectorConverter vc) {
+		val model = EcoreUtil.copy(solution.getVectorModel.getModel)
+		this.model = vc.convert(model)
+		this.transformationsChain = new LinkedList<Map<Integer, String>>(solution.getTransformationsChain);
+	}
+	
 	def getModel() {
 		if (model instanceof VectorEObject) {
 			return model.getModel
@@ -34,7 +42,7 @@ class Solution {
 	}
 	
 	def VectorEObject getVectorModel() {
-		if (model instanceof VectorEObject) {
+		if (this.model instanceof VectorEObject) {
 			return model
 		}
 		return null
@@ -58,3 +66,10 @@ class Solution {
 		return this.transformationsChain;
 	}
 }
+
+
+
+
+
+
+

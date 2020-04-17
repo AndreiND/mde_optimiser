@@ -8,6 +8,7 @@ import org.eclipse.emf.ecore.EClass
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EPackage
 import org.eclipse.emf.ecore.EReference
+import org.eclipse.emf.ecore.impl.DynamicEObjectImpl
 import uk.ac.kcl.inf.mdeoptimiser.libraries.core.optimisation.vector.VectorEObject
 
 class VectorRemoveNode implements VectorMutationOperator {
@@ -26,10 +27,12 @@ class VectorRemoveNode implements VectorMutationOperator {
 	override mutate(VectorEObject veo) {
 		switch this.condition {
 			case "empty": {
-				deleteEmpty(veo)
+				deleteRandomEmpty(veo)
+				
 			} 
 			default :{
 				randomDelete(veo)
+				
 			}
 		}
 	}
@@ -55,46 +58,36 @@ class VectorRemoveNode implements VectorMutationOperator {
 		}
 	}
 	
-	def deleteEmpty(VectorEObject veo) {
+	def deleteRandomEmpty(VectorEObject veo) {
 		
-		var boolean deleted = false
-		if (veo.isDynamic) {
-			
-		} else {
-			val Iterator<Map.Entry<EObject, Integer>> itr = veo.getBaseEObjectMap.entrySet.iterator
-			var EObject toRemove = null;
-			var removedValue = 0
-			while(itr.hasNext && deleted == false) {
-				println("looper")
-				val entry = itr.next
-				if (!veo.getGene.contains(entry.getValue)) {
-//					println("Value: " + entry.getValue + " is not found inside the gene: ")
-//					println(veo.getGene + "\n\n")
-					toRemove = entry.getKey
-					removedValue = entry.getValue
-					veo.getBaseEObjectMap.remove(entry.key)
-					deleted = true
-				}
+		val baseMap = veo.getBaseEObjectMap
+		val gene = veo.getGene
+		val Iterator<Map.Entry<EObject, Integer>> itr = baseMap.entrySet.iterator
+		
+		while(itr.hasNext) {
+			val entry = itr.next
+			if (!gene.contains(entry.value)) {
+				val toRemove = entry.getKey as DynamicEObjectImpl
+				veo.deleteVectorObject(toRemove)
+				return true
 			}
 			
-			val EList<EObject> nodeList = getNodeList(veo.getModel)
-			if (!nodeList.isEmpty) {
-				// val toRemove = nodeList.get(new Random().nextInt(nodeList.size))
-//				println("toRemove:" + toRemove)
-//				println("Removed value number: " + removedValue)
-				getNodeList(veo.getModel).remove(toRemove)
-			}
 		}
-		veo.fillVector
-		return deleted
+		println("Remove operator returning false")
+		return false
+		
+		
 	}
 	
 	def randomDelete(VectorEObject veo) {
 		val EList<EObject> nodeList = getNodeList(veo.getModel)
+		
 		if (!nodeList.isEmpty) {
-			val toRemove = nodeList.get(new Random().nextInt(nodeList.size))
-			getNodeList(veo.getModel).remove(toRemove)
+			val DynamicEObjectImpl toRemove = nodeList.get(new Random().nextInt(nodeList.size)) as DynamicEObjectImpl
+			
+			veo.deleteVectorObject(toRemove)
 			return true
+			
 		}
 		println("Remove operator returning false")
 		return false

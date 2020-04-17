@@ -8,8 +8,6 @@ import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EPackage
 import org.eclipse.emf.ecore.EReference
 import org.eclipse.emf.ecore.impl.DynamicEObjectImpl
-import uk.ac.kcl.inf.mdeoptimiser.languages.mopt.RulegenEdge
-import uk.ac.kcl.inf.mdeoptimiser.languages.mopt.RulegenNode
 import uk.ac.kcl.inf.mdeoptimiser.languages.mopt.RulegenSpec
 import uk.ac.kcl.inf.mdeoptimiser.libraries.core.optimisation.interpreter.guidance.Solution
 import uk.ac.kcl.inf.mdeoptimiser.libraries.core.optimisation.operators.adaptation.MutationStepSizeStrategy
@@ -21,7 +19,7 @@ import uk.ac.kcl.inf.mdeoptimiser.libraries.core.optimisation.vector.RandomSelec
 import uk.ac.kcl.inf.mdeoptimiser.libraries.core.optimisation.vector.VectorConverter
 import uk.ac.kcl.inf.mdeoptimiser.libraries.core.optimisation.vector.VectorEObject
 
-class VectorRandomOperatorMutationStrategy implements MutationStrategy {
+class VectorRepetitiveMutationStrategy implements MutationStrategy {
 	
 	MutationStepSizeStrategy mutationStepSizeStrategy;
 	ArrayList<VectorMutationOperator> operators;
@@ -36,9 +34,7 @@ class VectorRandomOperatorMutationStrategy implements MutationStrategy {
 		this.rgs = rgs
 		this.metamodel = metamodel
 		this.nodeClass = node
-		this.operators = newArrayList
-		
-		
+		this.operators = newArrayList		
 		this.randomSelector = new RandomSelector(this.operators)
 		
 		operators.add(new VectorFlip(1))
@@ -63,21 +59,40 @@ class VectorRandomOperatorMutationStrategy implements MutationStrategy {
 		return candidateSolution
 	}
 	
+	
+	
+	
+	
+	
+	
 	def applyOperators(Solution solution) {
 		val stepSize = this.mutationStepSizeStrategy.nextStepSize
 		val model = solution.getVectorModel
 		
 		for (var step = 1; step <= stepSize; step++) {
 			var VectorMutationOperator operator = null
-			var operatorApplied = false
 			
 			do {
-				operator = this.randomSelector.getNextOperator
-				operatorApplied = operator.mutate(model)
+				if (operator === null) {
+					operator = randomSelector.getNextOperator
+				}
+				
+				if (operator.mutate(model)) {
+					println("Operator applied: " + operator.getName)
+				} else {
+					operator = null
+				}
 
-			} while (!operatorApplied && randomSelector.hasUntriedOperators)
+			} while (operator === null && randomSelector.hasUntriedOperators)
 		}
 	}
+	
+	
+	
+	
+	
+	
+	
 	
 	def void createNode(VectorEObject model) {
 		val newObject = new DynamicEObjectImpl(nodeClass)
@@ -111,7 +126,7 @@ class VectorRandomOperatorMutationStrategy implements MutationStrategy {
 				}
 			}
 		}
-	}
-
+	}	
+	
+	
 }
-

@@ -25,6 +25,7 @@ class UserModelProvider implements IModelProvider {
 	}
 
 	def Solution loadModel(String path) {
+		
 		val resource = resourceSet.createResource(path)
 		resource.load(Collections.EMPTY_MAP)
 		resource.allContents.head
@@ -32,7 +33,7 @@ class UserModelProvider implements IModelProvider {
 		if(this.modelInitialiser !== null){
 			return modelInitialiser.initialise(resource.allContents.head)
 		}
-		
+				
 		return new Solution(resource.allContents.head, new LinkedList<String>)
 	}
 

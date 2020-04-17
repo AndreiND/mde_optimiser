@@ -1,6 +1,5 @@
 package uk.ac.kcl.inf.mdeoptimiser.libraries.core.optimisation.operators.vector
 
-import org.eclipse.emf.common.util.EList
 import org.eclipse.emf.ecore.EClass
 import org.eclipse.emf.ecore.impl.DynamicEObjectImpl
 import uk.ac.kcl.inf.mdeoptimiser.libraries.core.optimisation.vector.VectorEObject

@@ -12,14 +12,15 @@ import uk.ac.kcl.inf.mdeoptimiser.libraries.core.optimisation.operators.mutation
 
 class MutationStrategyFactory {
 
-	HenshinExecutor henshinExecutor
-	MutationStrategy mutationStrategy
-	MutationStepSizeStrategy mutationStepSizeStrategy
-	Parameter mutationStrategyParameter
-	RulegenSpec rgs
-	EReference vectorEdge
+	HenshinExecutor henshinExecutor;
+	MutationStrategy mutationStrategy;
+	MutationStepSizeStrategy mutationStepSizeStrategy;
+	Parameter mutationStrategyParameter;
+	RulegenSpec rgs;
 	EClass node;
 	EPackage metamodel;
+	Boolean vector = false;
+	String deleteCondition;
 	
 	new(HenshinExecutor henshinExecutor, MutationStepSizeStrategy mutationStepSizeStrategy,
 		AlgorithmSpec algorithmSpec) {
@@ -28,13 +29,14 @@ class MutationStrategyFactory {
 		this.mutationStrategyParameter = getMutationStrategyParameter(algorithmSpec)
 	}
 	
-	new(MutationStepSizeStrategy mutationStepSizeStrategy, AlgorithmSpec algorithmSpec, RulegenSpec rgs, EReference vectorEdge, EClass node, EPackage metamodel) {
+	new(MutationStepSizeStrategy mutationStepSizeStrategy, AlgorithmSpec algorithmSpec, RulegenSpec rgs, EClass node, EPackage metamodel, String deleteCondition) {
 		this.mutationStepSizeStrategy = mutationStepSizeStrategy
 		this.mutationStrategyParameter = getMutationStrategyParameter(algorithmSpec)
 		this.rgs = rgs
-		this.vectorEdge = vectorEdge;
 		this.node = node;
 		this.metamodel = metamodel
+		this.deleteCondition = deleteCondition
+		vector = true
 	}
 	
 	/**
@@ -52,24 +54,32 @@ class MutationStrategyFactory {
 			
 			//TODO This should be an enum perhaps
 			val strategyType = getMutationStrategySpecification(this.mutationStrategyParameter);
-			
-			switch strategyType {
-				
-				case "random": {
-					return new RandomOperatorMutationStrategy(this.henshinExecutor, this.mutationStepSizeStrategy, new RandomOperatorSelector(this.henshinExecutor))
+			if (!vector) {
+				switch strategyType {
+					
+					case "random": {
+						return new RandomOperatorMutationStrategy(this.henshinExecutor, this.mutationStepSizeStrategy, new RandomOperatorSelector(this.henshinExecutor))
+					}
+					
+					case "repetitive": {
+						return new RepetitiveOperatorMutationStrategy(this.henshinExecutor, this.mutationStepSizeStrategy, new RandomOperatorSelector(this.henshinExecutor))
+					}
+					
+					//Manual Henshin Matching Strategy
+					case "manual": {
+						return new ManualMatchingMutationStrategy(this.henshinExecutor, this.mutationStepSizeStrategy)
+					}
 				}
-				
-				case "repetitive": {
-					return new RepetitiveOperatorMutationStrategy(this.henshinExecutor, this.mutationStepSizeStrategy, new RandomOperatorSelector(this.henshinExecutor))
-				}
-				
-				//Manual Henshin Matching Strategy
-				case "manual": {
-					return new ManualMatchingMutationStrategy(this.henshinExecutor, this.mutationStepSizeStrategy)
-				}
-				
-				case "VectorRandom" : {
-					return new VectorRandomOperatorMutationStrategy(this.mutationStepSizeStrategy, this.rgs, this.vectorEdge, this.node, this.metamodel)
+			} else {
+				switch strategyType {
+										
+					case "random" : {
+						return new VectorRandomOperatorMutationStrategy(this.mutationStepSizeStrategy, this.rgs, this.node, this.metamodel, deleteCondition)
+					}
+					
+					case "repetitive" : {
+						return new VectorRepetitiveMutationStrategy(this.mutationStepSizeStrategy, this.rgs, this.node, this.metamodel, deleteCondition)
+					}
 				}
 			}
 		}

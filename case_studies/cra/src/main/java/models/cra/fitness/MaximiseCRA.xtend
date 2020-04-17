@@ -5,7 +5,7 @@ import org.eclipse.emf.common.util.EList
 import uk.ac.kcl.inf.mdeoptimiser.libraries.core.optimisation.interpreter.guidance.Solution
 
 class MaximiseCRA extends AbstractModelQueryFitnessFunction {
-
+	
 	override double computeFitness(Solution solution) {
 		val cohesion = calculateCohesionRatio(solution.model);
 		val coupling = calculateCouplingRatio(solution.model);

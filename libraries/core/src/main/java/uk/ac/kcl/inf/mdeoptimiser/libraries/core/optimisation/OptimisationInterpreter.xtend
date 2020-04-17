@@ -15,17 +15,20 @@ import org.eclipse.emf.henshin.model.Module
 import org.eclipse.emf.henshin.model.Unit
 import org.eclipse.emf.henshin.model.resource.HenshinResourceSet
 import org.moeaframework.Instrumenter
+import uk.ac.kcl.inf.mdeoptimiser.languages.mopt.AlgorithmSpec
 import uk.ac.kcl.inf.mdeoptimiser.languages.mopt.Optimisation
 import uk.ac.kcl.inf.mdeoptimiser.languages.mopt.RulegenSpec
 import uk.ac.kcl.inf.mdeoptimiser.languages.mopt.impl.SearchSpecImpl
+import uk.ac.kcl.inf.mdeoptimiser.languages.validation.algorithm.AlgorithmParameter
+import uk.ac.kcl.inf.mdeoptimiser.languages.validation.algorithm.AlgorithmParametersConfiguration
 import uk.ac.kcl.inf.mdeoptimiser.libraries.core.optimisation.executor.SolutionGenerator
 import uk.ac.kcl.inf.mdeoptimiser.libraries.core.optimisation.executor.UserModelProvider
 import uk.ac.kcl.inf.mdeoptimiser.libraries.core.optimisation.executor.VectorModelProvider
 import uk.ac.kcl.inf.mdeoptimiser.libraries.core.optimisation.moea.MoeaOptimisation
+import uk.ac.kcl.inf.mdeoptimiser.libraries.core.optimisation.vector.VectorConverter
 import uk.ac.kcl.inf.mdeoptimiser.libraries.rulegen.RulesGenerator
 import uk.ac.kcl.inf.mdeoptimiser.libraries.rulegen.metamodel.Multiplicity
 import uk.ac.kcl.inf.mdeoptimiser.libraries.rulegen.metamodel.RuleSpec
-import uk.ac.kcl.inf.mdeoptimiser.libraries.core.optimisation.vector.VectorConverter
 
 class OptimisationInterpreter {
 
@@ -41,11 +44,17 @@ class OptimisationInterpreter {
 	
 	IPath projectRootPath;
 	
-	String vectorFlag = "vector"
+	Boolean vectorFlag = false
 	
 	VectorConverter vectorConverter
 
 	Map<EPackage, List<Module>> generatedOperators;
+	
+	AlgorithmSpec algoSpec;
+	
+	List<AlgorithmParameter> algoParams
+	
+	String deleteCondition
 
 	new (String projectPath, Optimisation model){
 		this.model = model;
@@ -53,35 +62,30 @@ class OptimisationInterpreter {
 		val ss = model.search as SearchSpecImpl;
 		val rgs = ss.eGet(2, true, false) as EList<RulegenSpec>;
 		this.vectorConverter = new VectorConverter(this.getMetamodel, rgs.get(0))
+		this.deleteCondition = model.solver.algorithm.parameters.filter[p| p.name.equals("deleteCondition")].head.getValue.getFunctional
+		println("DELETE CONDITION: " + deleteCondition)
+		if (model.solver.algorithm.parameters.filter[p| p.name.equals("vector")].head.getValue.getFunctional.equals("yes")) {
+			this.vectorFlag = true
+		}
+		println("VECTORFLAG: " + model.solver.algorithm.parameters.filter[p| p.name.equals("vector")].head.getValue.getFunctional)
+		
 	}
 
 	def Instrumenter start() {
 
 		//This model provider loads the model given by the user in the DSL
-		if (this.vectorFlag != "vector") {
-		var solutionGenerator = new SolutionGenerator(model,
-											getBreedingOperators,
-											getMutationOperators,
-											getModelProvider,
-											getMetamodel);
-		
-		val metamodel = getMetamodel
-		println("Metamodel: " + metamodel);
-		println("Metamodel EClassifiers: " + metamodel.getEClassifiers);
-		println("Model Evolvers: " + model.search.evolvers)
-		return new MoeaOptimisation().execute(model.solver, solutionGenerator)
+		if (!vectorFlag) {
+			println("Running henshin implementation")
+			var solutionGenerator = new SolutionGenerator(model,
+												getBreedingOperators,
+												getMutationOperators,
+												getModelProvider,
+												getMetamodel);
+			
+			return new MoeaOptimisation().execute(model.solver, solutionGenerator)
 		} else {
-			for (rule: getMutationOperators) {
-				println("Rule: " + rule)
-//				println("Rule getParameters: " + rule.getParameters)
-//				println("Rule getParameterMappings: " + rule.getParameterMappings)
-//				println("Rule isActivated: " + rule.isActivated)
-//				println("Rule getModule: " + rule.getModule)
-			}
-			println("ProjectRootPath: " + projectRootPath)
-			println("Vector implementation goes here");
-			println("NodespecNode: " + vectorConverter.getNodeSpecNode)
-			var solutionGenerator = new SolutionGenerator(model, getModelProvider, getMetamodel, vectorConverter.getVectorEdge, vectorConverter.getNodeSpecNode);
+			println("Running vector implementation")
+			var solutionGenerator = new SolutionGenerator(model, getModelProvider, getMetamodel, vectorConverter.getNodeSpecNode, this.deleteCondition);
 			return new MoeaOptimisation().execute(model.solver, solutionGenerator)
 		}
 		
@@ -90,14 +94,18 @@ class OptimisationInterpreter {
 	def IModelProvider getModelProvider(){
 		Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put(
     	"nrp", new XMIResourceFactoryImpl());
-		if (vectorFlag != "vector") {
+		if (!vectorFlag) {
 			if(model.problem.modelInitialiser !== null){
 				return new UserModelProvider(getModelInitialiser(), getResourceSet(projectRootPath.append(model.problem.basepath.location).toPortableString), model.problem.model.location)
 			}
-	
+
 			return new UserModelProvider(getResourceSet(projectRootPath.append(model.problem.basepath.location).toPortableString), model.problem.model.location)
 		
 		} else {
+			
+			if(model.problem.modelInitialiser !== null) {
+				return new VectorModelProvider(getModelInitialiser(), getResourceSet(projectRootPath.append(model.problem.basepath.location).toPortableString), model.problem.model.location, vectorConverter)
+			}
 			
 			return new VectorModelProvider(getResourceSet(projectRootPath.append(model.problem.basepath.location).toPortableString), model.problem.model.location, vectorConverter)
 			

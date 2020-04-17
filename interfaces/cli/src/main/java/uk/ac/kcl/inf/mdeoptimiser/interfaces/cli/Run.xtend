@@ -150,7 +150,7 @@ class Run {
 	}
 	
 	def MDEOBatch runBatch(String moptProjectPath, Optimisation optimisationModel, Integer batch, boolean singleBatch){
-			
+						
 			var optimisationInterpreter = new OptimisationInterpreter(moptProjectPath, optimisationModel);
 	            		
     		val startTime = System.nanoTime;

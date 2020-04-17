@@ -14,21 +14,24 @@ class VectorModelProvider implements IModelProvider {
 	IModelInitialiser modelInitialiser;
 	VectorConverter vectorConverter;
 	
-	new (HenshinResourceSet rs, String userModelPath, VectorConverter vc){
+	new (HenshinResourceSet rs, String userModelPath, VectorConverter vc) {
 		this.modelPath = userModelPath;
 		this.resourceSet = rs;
-		println("RESOURCE SET INIT: " + resourceSet)
+		this.vectorConverter = vc
 		
-		// println("MODEL INSIDE MODELPROVIDER: " + this.model)
-		vectorConverter = vc
+	}
+	
+	new (IModelInitialiser modelInitialiser, HenshinResourceSet rs, String userModelPath, VectorConverter vc) {
+		this.modelInitialiser = modelInitialiser
+		this.modelPath = userModelPath;
+		this.resourceSet = rs;
+		this.vectorConverter = vc
 		
 	}
 
 
 	def Solution loadModel(String path) {
-		println("Path: " + path)
 		val resource = resourceSet.createResource(path)
-		println("Resource: " + resource)
 		resource.load(Collections.EMPTY_MAP)
 		resource.allContents.head
 		
@@ -36,7 +39,6 @@ class VectorModelProvider implements IModelProvider {
 		if(this.modelInitialiser !== null){
 			return modelInitialiser.initialise(resource.allContents.head)
 		}
-		println("MODEL INSIDE MODELPROVIDER: " + resource.allContents.head)
 		return new Solution(vectorConverter.convert(resource.allContents.head))
 	}
 

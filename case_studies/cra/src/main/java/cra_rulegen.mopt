@@ -17,6 +17,8 @@ solver {
 		population: 40
 		mutation.step: 3
 		mutation.strategy: random
+		deleteCondition: empty
+		vector: yes
 	}
 	termination {
 		evolutions: 500

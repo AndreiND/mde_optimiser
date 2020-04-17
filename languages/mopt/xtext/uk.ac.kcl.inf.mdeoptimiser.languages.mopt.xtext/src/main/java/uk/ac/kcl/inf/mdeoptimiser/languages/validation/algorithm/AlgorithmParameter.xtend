@@ -25,8 +25,8 @@ class AlgorithmParameter {
 	def String getName() {
 		return this.name;
 	}
-	
-	def boolean isRequired(){
+
+	def boolean isRequired() {
 		return this.required;
 	}
 }

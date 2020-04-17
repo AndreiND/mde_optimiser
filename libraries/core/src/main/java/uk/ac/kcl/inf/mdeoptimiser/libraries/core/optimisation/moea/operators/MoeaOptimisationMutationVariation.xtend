@@ -4,6 +4,7 @@ import org.moeaframework.core.Solution
 import org.moeaframework.core.Variation
 import uk.ac.kcl.inf.mdeoptimiser.libraries.core.optimisation.executor.SolutionGenerator
 import uk.ac.kcl.inf.mdeoptimiser.libraries.core.optimisation.moea.problem.MoeaOptimisationSolution
+import uk.ac.kcl.inf.mdeoptimiser.libraries.core.optimisation.vector.VectorEObject
 
 class MoeaOptimisationMutationVariation implements Variation {
 	
@@ -18,7 +19,10 @@ class MoeaOptimisationMutationVariation implements Variation {
 
 		var parentSolution = parents.head as MoeaOptimisationSolution;
 		var newSolution = parentSolution.copy
-			
+//		if (newSolution.model instanceof VectorEObject) {
+//			
+//			newSolution.setModel(solutionGenerator.mutate(newSolution.model.getModel))
+//		}	
 		newSolution.setModel(solutionGenerator.mutate(newSolution.model));
 		//System.out.println("Evolved solution " + newSolution.evolutionsCounter)
 		#[newSolution]

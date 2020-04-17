@@ -36,11 +36,12 @@ class SolutionGenerator {
 
 	MutationStepSizeStrategy mutationStepSizeStrategy;
 	
-	EReference vectorEdge;
 	
 	EClass node;
 	
 	boolean vector = false;
+	
+	String deleteCondition;
 	
 //	RulegenSpec ruleSpecs;
 	
@@ -55,18 +56,15 @@ class SolutionGenerator {
 			breedingOperators,
 			model.solver
 		)
-		println("MUTATION OPERATORS: " + mutationOperators);
 	}
 	
-	new(Optimisation model, IModelProvider modelProvider, EPackage metamodel, EReference vectorEdge, EClass node) {
+	new(Optimisation model, IModelProvider modelProvider, EPackage metamodel, EClass node, String deleteCondition) {
 		this.optimisationModel = model
 		this.initialModelProvider = modelProvider
 		this.theMetamodel = metamodel
 		this.vector = true
-		this.vectorEdge = vectorEdge
 		this.node = node
-//		this.ruleSpecs = model.search.rulegen.get(0);
-		println("How many SolutionGenerators are there? " + this)
+		this.deleteCondition = deleteCondition
 	}
 
 	/**
@@ -91,7 +89,7 @@ class SolutionGenerator {
 			val rgs = ss.eGet(2, true, false) as EList<RulegenSpec>;
 			if (this.mutationStrategy === null) {
 				this.mutationStrategy = new MutationStrategyFactory(this.mutationStepSizeStrategy,
-					optimisationModel.solver.algorithm, rgs.get(0), this.vectorEdge, this.node, theMetamodel).getStrategy()
+				optimisationModel.solver.algorithm, rgs.get(0), this.node, theMetamodel, this.deleteCondition).getStrategy()
 			}
 		}
 
