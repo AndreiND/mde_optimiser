@@ -194,7 +194,16 @@ class VectorConverter {
 				target.setUnsettable(false)
 			}
 			
-			vectorObject = new VectorEObject(initialModel, target, vectorEdge, this.rulegenSpec.getNodeSpec.getNode, this.baseClass)
+			var String nodeString = null;
+			if (this.rulegenSpec.getNodeSpec !== null) {
+				nodeString = this.rulegenSpec.getNodeSpec.getNode
+			} else {
+				nodeString = this.rulegenSpec.getEdgeSpec.getNode
+			}
+			
+			
+			
+			vectorObject = new VectorEObject(initialModel, target, vectorEdge, nodeString, this.baseClass)
 		} else {
 			println("Not able to vectorise given the current settings")
 		}
