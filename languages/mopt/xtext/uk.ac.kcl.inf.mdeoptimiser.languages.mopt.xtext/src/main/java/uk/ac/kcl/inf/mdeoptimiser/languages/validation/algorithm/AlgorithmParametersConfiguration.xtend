@@ -78,7 +78,7 @@ class AlgorithmParametersConfiguration {
 		parameters.add(new AlgorithmParameter("population"))
 		parameters.add(new AlgorithmParameter("mutation.step", "fixed"))
 		parameters.add(new AlgorithmParameter("mutation.strategy", "random"))
-		parameters.add(new AlgorithmParameter("deleteCondition", "empty"))
+		parameters.add(new AlgorithmParameter("deleteCondition", "none"))
 		parameters.add(new AlgorithmParameter("vector", "false"))
 		parameters.add(new AlgorithmParameter("mutation.selection", ""))
 		return parameters

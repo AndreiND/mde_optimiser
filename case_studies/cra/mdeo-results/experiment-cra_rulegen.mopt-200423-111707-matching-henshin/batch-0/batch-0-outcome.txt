@@ -1,0 +1,20 @@
+
+============================================
+
+Batch 0 duration: 00:00:34.157
+
+--------------------------------------------
+Evaluation data for solution: /home/andrei/eclipse-workspace/mde_optimiser/case_studies/cra/mdeo-results/experiment-cra_rulegen.mopt-200423-111707-matching-henshin/batch-00D126613.xmi
+
+Objective values:
+CRA: -3.0
+
+Constraint values:
+MinimiseClasslessFeatures: 0.0
+
+Transformations chain:
+Length: 12
+Sequence: {1=createClass_IN_ClassModel, 2=createClass_IN_ClassModel, 3=createClass_IN_ClassModel} -> {1=createClass_IN_ClassModel, 2=addToClass_encapsulates_Feature, 3=createClass_IN_ClassModel} -> {1=addToClass_encapsulates_Feature, 2=deleteClass_IN_ClassModel, 3=deleteClass_IN_ClassModel} -> {1=addToClass_encapsulates_Feature, 2=createClass_IN_ClassModel, 3=changeFeature_isEncapsulatedBy_TO_Class} -> {1=deleteClass_IN_ClassModel, 2=createClass_IN_ClassModel, 3=deleteClass_IN_ClassModel} -> {1=deleteClass_IN_ClassModel, 2=createClass_IN_ClassModel, 3=deleteClass_IN_ClassModel} -> {1=createClass_IN_ClassModel, 2=changeFeature_isEncapsulatedBy_TO_Class, 3=changeFeature_isEncapsulatedBy_TO_Class} -> {1=removeFromClass_encapsulates_Feature, 2=createClass_IN_ClassModel, 3=addToClass_encapsulates_Feature} -> {1=deleteClass_IN_ClassModel, 2=changeFeature_isEncapsulatedBy_TO_Class, 3=createClass_IN_ClassModel} -> {1=createClass_IN_ClassModel, 2=deleteClass_IN_ClassModel, 3=deleteClass_IN_ClassModel} -> {1=createClass_IN_ClassModel, 2=deleteClass_IN_ClassModel, 3=changeFeature_isEncapsulatedBy_TO_Class} -> {1=changeFeature_isEncapsulatedBy_TO_Class, 2=createClass_IN_ClassModel, 3=changeFeature_isEncapsulatedBy_TO_Class}
+
+============================================
+

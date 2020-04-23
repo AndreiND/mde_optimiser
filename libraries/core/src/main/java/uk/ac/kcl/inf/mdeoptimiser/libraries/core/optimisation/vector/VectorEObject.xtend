@@ -11,12 +11,13 @@ import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EReference
 import org.eclipse.emf.ecore.impl.DynamicEObjectImpl
 import org.eclipse.emf.ecore.util.EcoreUtil
+import uk.ac.kcl.inf.mdeoptimiser.languages.mopt.RulegenSpec
 
 class VectorEObject extends DynamicEObjectImpl {
 	
 	DynamicEObjectImpl model
 	// target is the containment reference that holds a list of the objects to be vectorised
-	// (target can be an empty list and in this case we should initialise an empty vector)
+	// target can be an empty list and in this case we should initialise an empty vector
 	EReference target;
 	EClass baseClass;
 	// relation is the reference that represents the relationship being modelled by the vector
@@ -29,13 +30,15 @@ class VectorEObject extends DynamicEObjectImpl {
 	EList<DynamicEObjectImpl> eObjectList;
 	String vectorNode;
 	boolean dynamic = false
+	RulegenSpec rgs;
 	
-	new (DynamicEObjectImpl m, EReference target, EReference relation, String nodeClass, EClass baseClass) {
+	new (DynamicEObjectImpl m, EReference target, EReference relation, String nodeClass, EClass baseClass, RulegenSpec rgs) {
 		this.model = m
 		this.target = target
 		this.relation = relation
 		this.vectorNode = nodeClass
 		this.baseClass = baseClass
+		this.rgs = rgs
 		this.eObjectList = this.model.eGet(this.target) as EList<DynamicEObjectImpl>
 		
 		this.gene = newArrayList
@@ -48,7 +51,15 @@ class VectorEObject extends DynamicEObjectImpl {
 		getNodes
 		fillVector
 		constructModelFromVector
-		println("건설로봇 준비 완료!")	
+		stopInfinite
+		println("건설로봇 준비 완료!")
+		println("\nGene: " + this.gene)
+	}
+	
+	def stopInfinite() throws EmptyStaticGeneException {
+		if(this.rgs.getNodeSpec === null && (this.gene.isEmpty || this.baseEObjectMap.isEmpty)) {
+			throw new EmptyStaticGeneException("Gene is static and empty, no mutation can occur.")
+		}
 	}
 	
 	def mapEObjects() {
@@ -73,19 +84,11 @@ class VectorEObject extends DynamicEObjectImpl {
 	
 	def void getNodes() {
 		var counter = 0
-		for (EObject obj : model.eContents) {
-			if (dynamic) {
-				if (matchesEClassName(relation.getEReferenceType.getName, obj.eClass)) {
-					baseEObjectMap.put(obj, counter)
-					counter++
-				}
-
-			} else {
-				if (matchesEClassName(relation.getEReferenceType.getName, obj.eClass)) {
-					baseEObjectMap.put(obj, counter)
-					counter++
-				}
-			}
+		for (EObject obj : model.eContents) {	
+			if (matchesEClassName(relation.getEReferenceType.getName, obj.eClass)) {
+				baseEObjectMap.put(obj, counter)
+				counter++
+			}	
 		}
 	}
 	
@@ -109,10 +112,8 @@ class VectorEObject extends DynamicEObjectImpl {
 		}
 		
 		for (entry:vectorMap.entrySet) {
-			if (entry.getValue !== null) {
-				val value = flippedBaseEObjectMap.get(gene.get(entry.getKey))
-				entry.getValue.eSet(relation, value)
-			}
+			val value = flippedBaseEObjectMap.get(gene.get(entry.getKey))
+			entry.getValue.eSet(relation, value)			
 		}
 		
 	}
@@ -143,7 +144,6 @@ class VectorEObject extends DynamicEObjectImpl {
 			addToContainmentReference(n)
 			vectorMap.put(gene.size, n)
 			gene.add(null)
-			
 		} else {
 			if (!this.baseEObjectMap.isEmpty) {
 				(model.eGet(target) as EList<DynamicEObjectImpl>).add(n)
@@ -180,7 +180,10 @@ class VectorEObject extends DynamicEObjectImpl {
 		}
 	}
 	
-	def void deleteVectorObject(DynamicEObjectImpl n) {
+	def deleteVectorObject(DynamicEObjectImpl n) {
+		if (!this.model.eContents.contains(n)) {
+			return false
+		}
 		if (dynamic) {		
 			var index = 0;
 			for (entry : vectorMap.entrySet) {
@@ -193,39 +196,25 @@ class VectorEObject extends DynamicEObjectImpl {
 				vectorMap.replace(i, vectorMap.get(i + 1))
 			}
 			vectorMap.remove(vectorMap.size - 1)
-			deleteFromContainmentReference(n)
+			EcoreUtil.delete(n)
 		} else {
 			baseEObjectMap.remove(n)
 			EcoreUtil.delete(n)
 			fillVector()
 		}
+		return true
 	}
 	
 	def void addToContainmentReference(DynamicEObjectImpl n) {
 		for (eref:model.eClass.getEReferences) {
-			if (eref.getEReferenceType.getName.equals(this.baseClass.getName) && eref.isContainment) {
+			if (eref.getEReferenceType.getName.equals(n.eClass.getName) && eref.isContainment) {
 				(model.eGet(eref) as EList<DynamicEObjectImpl>).add(n)
 			}
 		}
 		for(obj : model.eContents) {
 			for(eref : obj.eClass.getEReferences) {
-				if (eref.getEReferenceType.getName.equals(this.baseClass.getName) && eref.isContainment) {
+				if (eref.getEReferenceType.getName.equals(n.eClass.getName) && eref.isContainment) {
 					(obj.eGet(eref) as EList<DynamicEObjectImpl>).add(n)
-				}
-			}
-		}
-	}
-	
-	def void deleteFromContainmentReference(DynamicEObjectImpl n) {
-		for (eref:model.eClass.getEReferences) {
-			if (eref.getEReferenceType.getName.equals(this.baseClass.getName)) {
-				(model.eGet(eref) as EList<DynamicEObjectImpl>).remove(n)
-			}
-		}
-		for(obj : model.eContents) {
-			for(eref : obj.eClass.getEReferences) {
-				if (eref.getEReferenceType.getName.equals(this.baseClass.getName)) {
-					(obj.eGet(eref) as EList<DynamicEObjectImpl>).remove(n)
 				}
 			}
 		}
@@ -251,6 +240,9 @@ class VectorEObject extends DynamicEObjectImpl {
 		return toReturn
 	}
 	
+	def infinite() {
+		return (this.rgs.getNodeSpec === null && (this.gene.isEmpty || this.baseEObjectMap.isEmpty))
+	}
 	
 	def DynamicEObjectImpl getModel() {
 		return this.model

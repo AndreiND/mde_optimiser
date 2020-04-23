@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="ASCII"?>
+<henshin:Module xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:henshin="http://www.eclipse.org/emf/2011/Henshin" xmi:id="_QR4r0IVHEeqcCqJ0Yp8RLg" name="P_ALL_Class_encapsulates_edge_REMOVE" description="Removes Class edge of type encapsulates">
+  <imports href="architectureCRA.ecore#/"/>
+  <units xsi:type="henshin:Rule" xmi:id="_QR4r0YVHEeqcCqJ0Yp8RLg" name="removeFromClass_encapsulates_Feature" description="Removes from Class's reference encapsulates the target Feature">
+    <lhs xmi:id="_QR4r0oVHEeqcCqJ0Yp8RLg" name="LHS">
+      <nodes xmi:id="_QR4r04VHEeqcCqJ0Yp8RLg" name="Selected" incoming="_QR4r1oVHEeqcCqJ0Yp8RLg" outgoing="_QR4r1YVHEeqcCqJ0Yp8RLg">
+        <type href="architectureCRA.ecore#//Class"/>
+      </nodes>
+      <nodes xmi:id="_QR4r1IVHEeqcCqJ0Yp8RLg" name="OldTarget" incoming="_QR4r1YVHEeqcCqJ0Yp8RLg" outgoing="_QR4r1oVHEeqcCqJ0Yp8RLg">
+        <type href="architectureCRA.ecore#//Feature"/>
+      </nodes>
+      <edges xmi:id="_QR4r1YVHEeqcCqJ0Yp8RLg" source="_QR4r04VHEeqcCqJ0Yp8RLg" target="_QR4r1IVHEeqcCqJ0Yp8RLg">
+        <type href="architectureCRA.ecore#//Class/encapsulates"/>
+      </edges>
+      <edges xmi:id="_QR4r1oVHEeqcCqJ0Yp8RLg" source="_QR4r1IVHEeqcCqJ0Yp8RLg" target="_QR4r04VHEeqcCqJ0Yp8RLg">
+        <type href="architectureCRA.ecore#//Feature/isEncapsulatedBy"/>
+      </edges>
+      <formula xsi:type="henshin:NestedCondition" xmi:id="_QR4r14VHEeqcCqJ0Yp8RLg">
+        <conclusion xmi:id="_QR4r2IVHEeqcCqJ0Yp8RLg" name="Class_lb0">
+          <nodes xmi:id="_QR4r2YVHEeqcCqJ0Yp8RLg" name="" outgoing="_QR4r24VHEeqcCqJ0Yp8RLg">
+            <type href="architectureCRA.ecore#//Class"/>
+          </nodes>
+          <nodes xmi:id="_QR4r2oVHEeqcCqJ0Yp8RLg" name="" incoming="_QR4r24VHEeqcCqJ0Yp8RLg">
+            <type href="architectureCRA.ecore#//Feature"/>
+          </nodes>
+          <edges xmi:id="_QR4r24VHEeqcCqJ0Yp8RLg" source="_QR4r2YVHEeqcCqJ0Yp8RLg" target="_QR4r2oVHEeqcCqJ0Yp8RLg">
+            <type href="architectureCRA.ecore#//Class/encapsulates"/>
+          </edges>
+        </conclusion>
+        <mappings xmi:id="_QR4r3IVHEeqcCqJ0Yp8RLg" origin="_QR4r04VHEeqcCqJ0Yp8RLg" image="_QR4r2YVHEeqcCqJ0Yp8RLg"/>
+      </formula>
+    </lhs>
+    <rhs xmi:id="_QR4r3YVHEeqcCqJ0Yp8RLg" name="RHS">
+      <nodes xmi:id="_QR4r3oVHEeqcCqJ0Yp8RLg" name="Selected">
+        <type href="architectureCRA.ecore#//Class"/>
+      </nodes>
+      <nodes xmi:id="_QR4r34VHEeqcCqJ0Yp8RLg" name="OldTarget">
+        <type href="architectureCRA.ecore#//Feature"/>
+      </nodes>
+    </rhs>
+    <mappings xmi:id="_QR4r4IVHEeqcCqJ0Yp8RLg" origin="_QR4r04VHEeqcCqJ0Yp8RLg" image="_QR4r3oVHEeqcCqJ0Yp8RLg"/>
+    <mappings xmi:id="_QR4r4YVHEeqcCqJ0Yp8RLg" origin="_QR4r1IVHEeqcCqJ0Yp8RLg" image="_QR4r34VHEeqcCqJ0Yp8RLg"/>
+  </units>
+</henshin:Module>

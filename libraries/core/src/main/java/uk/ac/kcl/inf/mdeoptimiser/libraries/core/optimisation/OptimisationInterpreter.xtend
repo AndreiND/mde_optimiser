@@ -8,6 +8,7 @@ import org.eclipse.core.runtime.IPath
 import org.eclipse.core.runtime.Path
 import org.eclipse.emf.common.util.EList
 import org.eclipse.emf.common.util.URI
+import org.eclipse.emf.ecore.EClass
 import org.eclipse.emf.ecore.EPackage
 import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl
@@ -15,12 +16,9 @@ import org.eclipse.emf.henshin.model.Module
 import org.eclipse.emf.henshin.model.Unit
 import org.eclipse.emf.henshin.model.resource.HenshinResourceSet
 import org.moeaframework.Instrumenter
-import uk.ac.kcl.inf.mdeoptimiser.languages.mopt.AlgorithmSpec
 import uk.ac.kcl.inf.mdeoptimiser.languages.mopt.Optimisation
 import uk.ac.kcl.inf.mdeoptimiser.languages.mopt.RulegenSpec
 import uk.ac.kcl.inf.mdeoptimiser.languages.mopt.impl.SearchSpecImpl
-import uk.ac.kcl.inf.mdeoptimiser.languages.validation.algorithm.AlgorithmParameter
-import uk.ac.kcl.inf.mdeoptimiser.languages.validation.algorithm.AlgorithmParametersConfiguration
 import uk.ac.kcl.inf.mdeoptimiser.libraries.core.optimisation.executor.SolutionGenerator
 import uk.ac.kcl.inf.mdeoptimiser.libraries.core.optimisation.executor.UserModelProvider
 import uk.ac.kcl.inf.mdeoptimiser.libraries.core.optimisation.executor.VectorModelProvider
@@ -50,11 +48,7 @@ class OptimisationInterpreter {
 
 	Map<EPackage, List<Module>> generatedOperators;
 	
-	AlgorithmSpec algoSpec;
-	
-	List<AlgorithmParameter> algoParams
-	
-	String deleteCondition
+	String deleteCondition = "";
 
 	new (String projectPath, Optimisation model){
 		this.model = model;
@@ -63,15 +57,16 @@ class OptimisationInterpreter {
 		val rgs = ss.eGet(2, true, false) as EList<RulegenSpec>;
 		this.vectorConverter = new VectorConverter(this.getMetamodel, rgs.get(0))
 		this.deleteCondition = model.solver.algorithm.parameters.filter[p| p.name.equals("deleteCondition")].head.getValue.getFunctional
+
 		if (model.solver.algorithm.parameters.filter[p| p.name.equals("vector")].head.getValue.getFunctional.equals("yes")) {
 			this.vectorFlag = true
-		}		
+		}
 	}
 
 	def Instrumenter start() {
 
 		//This model provider loads the model given by the user in the DSL
-		if (!vectorFlag) {
+		if (!vectorFlag || !vectorConverter.isVectorisable) {
 			println("Running henshin implementation")
 			var solutionGenerator = new SolutionGenerator(model,
 												getBreedingOperators,

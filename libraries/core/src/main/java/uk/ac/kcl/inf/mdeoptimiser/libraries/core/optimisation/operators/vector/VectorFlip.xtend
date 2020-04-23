@@ -2,6 +2,7 @@ package uk.ac.kcl.inf.mdeoptimiser.libraries.core.optimisation.operators.vector
 
 import java.util.Random
 import uk.ac.kcl.inf.mdeoptimiser.libraries.core.optimisation.vector.VectorEObject
+import uk.ac.kcl.inf.mdeoptimiser.libraries.core.optimisation.vector.EmptyStaticGeneException
 
 class VectorFlip implements VectorMutationOperator {
 	
@@ -13,8 +14,12 @@ class VectorFlip implements VectorMutationOperator {
 	}
 	
 	override boolean mutate(VectorEObject veo) {
+		if (veo.infinite) {
+			println("Time and again")
+			throw new EmptyStaticGeneException("Gene is static and empty, no mutation can occur.")
+		}
 		val beom = veo.getBaseEObjectMap
-		if (!beom.isEmpty) {
+		if (!beom.isEmpty && !veo.getGene.isEmpty) {
 			for (var i = 0;i < flips; i++) {
 				val randomIndex = new Random().nextInt(veo.getGene.size)
 				val currentAssignment = veo.getGene.get(randomIndex)
@@ -24,10 +29,7 @@ class VectorFlip implements VectorMutationOperator {
 					if (newValue == currentAssignment) {
 						while (newValue == currentAssignment) {
 							newValue = new Random().nextInt(beom.size)
-							println("NewValue: " + newValue)
-							println("CurrentAssignment: " + currentAssignment)
-							println("Beom size: " + beom.size)
-							println("Gene size: " + veo.getGene.size)
+
 						}
 					}
 				}
@@ -39,6 +41,7 @@ class VectorFlip implements VectorMutationOperator {
 			return true
 			
 		}
+		
 		println("Flip returning false")
 		return false
 	} 

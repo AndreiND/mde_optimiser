@@ -7,11 +7,11 @@ import uk.ac.kcl.inf.mdeoptimiser.libraries.core.optimisation.interpreter.guidan
 class MinimiseClasslessFeatures extends AbstractModelQueryFitnessFunction {
 	
 	override computeFitness(Solution solution) {
+		
 		var fitness = (solution.model.getFeature("features") as EList<EObject>).filter[feature | feature.getFeature("isEncapsulatedBy") === null].size;
 		println("Classless features: " + fitness)
 		return fitness;
-	}
-	
+	}	
 	override getName() {
 		return "Mimise classless features"
 	}

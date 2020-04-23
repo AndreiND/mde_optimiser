@@ -1,5 +1,6 @@
 package uk.ac.kcl.inf.mdeoptimiser.libraries.core.optimisation.vector
 
+import org.eclipse.emf.common.util.EList
 import org.eclipse.emf.ecore.EClass
 import org.eclipse.emf.ecore.EClassifier
 import org.eclipse.emf.ecore.EObject
@@ -21,11 +22,6 @@ class VectorConverter {
 	}
 	
 	def isVectorisable() {
-		// This function should, if there is an edgeSpec, check that the reference given by this edgeSpec has an upper bound of, or that it's opposite has an upper bound of 1
-		// In this case it should also check that either the nodeSpec gives an eReference belonging to the nodespec class, or that this 
-		// If there is no edgeSpec, then there should be max one reference from the class and max one reference to the class, at least one of these must exist.
-		// Also at least one of these must have an upper limit of 1. The origin class that holds the reference with upper bound 1 is the vector target, if both have an upper limit 1 
-		// reference then the node from the rulespec becomes the vector target.
 		val nodeSpec = this.rulegenSpec.getNodeSpec
 		val edgeSpec = this.rulegenSpec.getEdgeSpec
 		
@@ -66,8 +62,6 @@ class VectorConverter {
 					}
 				} else {
 					for (EReference eref : eClass.getEReferences) {
-						// NOTE At this stage, I have decided to exclude containment references from this list, assuming that all cases where the node class is contained, the containment simply 
-						// implies that the reference keeps a list of all instances of the node class, and as such is not significant information for the vectorisation process
 						if (eref.getEReferenceType.getName.equals(node.getName) && !eref.isContainment) {
 							refsToNode.add(eref)
 						}
@@ -76,41 +70,78 @@ class VectorConverter {
 			}
 		}
 		
-		val opposite = refsFromNode.get(0).getEOpposite
+		if (refsFromNode.size > 1 || refsToNode.size > 1) {
+			println("Cannot vectorise due to too many incoming or outgoing relations to the specified node.")
+		}
+		
+		var EReference opposite = null
+		if (!refsFromNode.isEmpty) {
+			opposite = refsFromNode.get(0).getEOpposite
+		}
+		
 		
 		if (refsFromNode.size > 0 || refsToNode.size > 0) {
-			if (nodeSpec !== null) {
-				
+			if (nodeSpec !== null) {	
 				if (refsFromNode.size == 1 && refsToNode.size == 1) {
 					if (opposite !== refsToNode.get(0)) {
 						return false
 					}
 				}
-				if (!refsFromNode.isEmpty) {
-					if (refsFromNode.get(0).getUpperBound == 1) {
-						this.vectorNode = node
-						this.vectorEdge = refsFromNode.get(0)
-						this.baseClass = refsFromNode.get(0).getEReferenceType
-						return true
-					} else if (!refsToNode.isEmpty) {
-						if (refsToNode.get(0).getUpperBound == 1) {
-							this.vectorNode = refsToNode.get(0).getEContainingClass
-							this.vectorEdge = refsToNode.get(0)
-							this.baseClass = node
-							return true
-						}
-					}
-				} else {
+				if (!refsToNode.isEmpty) {
 					if (refsToNode.get(0).getUpperBound == 1) {
 						this.vectorNode = refsToNode.get(0).getEContainingClass
 						this.vectorEdge = refsToNode.get(0)
 						this.baseClass = node
 						return true
+					} else if (!refsFromNode.isEmpty) {
+						if (refsFromNode.get(0).getUpperBound == 1) {
+							this.vectorNode = node
+							this.vectorEdge = refsFromNode.get(0)
+							this.baseClass = refsFromNode.get(0).getEReferenceType
+							return true
+						}
+					}
+					
+				} else {
+					if (refsFromNode.get(0).getUpperBound == 1) {
+						this.vectorNode = node
+						this.vectorEdge = refsFromNode.get(0)
+						this.baseClass = refsFromNode.get(0).getEReferenceType
+						return true
 					}
 				}
+				
+				
+				
+				
+				
+//				if (!refsFromNode.isEmpty) {
+//					if (refsFromNode.get(0).getUpperBound == 1) {
+//						this.vectorNode = node
+//						this.vectorEdge = refsFromNode.get(0)
+//						this.baseClass = refsFromNode.get(0).getEReferenceType
+//						return true
+//					} else if (!refsToNode.isEmpty) {
+//						if (refsToNode.get(0).getUpperBound == 1) {
+//							this.vectorNode = refsToNode.get(0).getEContainingClass
+//							this.vectorEdge = refsToNode.get(0)
+//							this.baseClass = node
+//							return true
+//						}
+//					}
+//				} 
+//				else {
+//					if (refsToNode.get(0).getUpperBound == 1) {
+//						this.vectorNode = refsToNode.get(0).getEContainingClass
+//						this.vectorEdge = refsToNode.get(0)
+//						this.baseClass = node
+//						return true
+//					}
+//				}
 			}
 			
 			if (edgeSpec !== null) {
+				
 				if (!refsFromNode.isEmpty) {
 					if (refsFromNode.get(0).getName.equals(edge)) {
 						if (refsFromNode.get(0).getUpperBound == 1) {
@@ -156,22 +187,49 @@ class VectorConverter {
 		return false
 	}
 	
+	
+	
+	def getContainmentReference(EObject model, EClass inputClass) {
+		var initialModel = model as DynamicEObjectImpl;
+		var EReference target;
+		for (EClassifier ec : this.metamodel.getEClassifiers) {
+				if (ec instanceof EClass) {
+					val eClass = ec as EClass
+					for (EReference eref : eClass.getEReferences) {
+						if (eref.getEReferenceType.getName.equals(inputClass.getName) && eref.isContainment && initialModel.eGet(eref) !== null) {
+							target = eref;
+						}
+					}
+				}
+			}
+		return target
+	}
+	
+	def getContainmentList(EObject model, EReference target) {
+		var EList<EObject> targetList;
+			if (model.eClass.getEReferences.contains(target)) {
+				targetList = model.eGet(target) as EList<EObject>
+			} else {
+				for (obj:model.eContents) {
+					if (obj.eClass.getEReferences.contains(target)) {
+						targetList = obj.eGet(target) as EList<EObject>
+					}
+				}
+			}
+		return targetList
+	}
+	
 	def VectorEObject convert(EObject model) {
 		var initialModel = model as DynamicEObjectImpl;
 		var VectorEObject vectorObject = null;
 		val nodeSpec = this.rulegenSpec.getNodeSpec;
 		val edgeSpec = this.rulegenSpec.getEdgeSpec;
-		
-		
-		
-//		println("isVectorisable(): " + isVectorisable)
-//		println("vectorNode: " + this.vectorNode)
-//		println("VectorEdge: " + this.vectorEdge)
-		
+
 		if (nodeSpec === null && edgeSpec === null || this.rulegenSpec === null) {
 			println("No rulegen found")
 			return null;
 		}
+		
 		
 		if (isVectorisable) {
 			var EReference target;
@@ -201,9 +259,8 @@ class VectorConverter {
 				nodeString = this.rulegenSpec.getEdgeSpec.getNode
 			}
 			
-			
-			
-			vectorObject = new VectorEObject(initialModel, target, vectorEdge, nodeString, this.baseClass)
+			vectorObject = new VectorEObject(initialModel, target, vectorEdge, nodeString, this.baseClass, this.rulegenSpec)
+
 		} else {
 			println("Not able to vectorise given the current settings")
 		}

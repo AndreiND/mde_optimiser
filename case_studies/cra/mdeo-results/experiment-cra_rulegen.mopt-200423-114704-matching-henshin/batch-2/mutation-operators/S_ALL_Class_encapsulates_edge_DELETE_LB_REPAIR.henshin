@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="ASCII"?>
+<henshin:Module xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:henshin="http://www.eclipse.org/emf/2011/Henshin" xmi:id="_MkDSsIVIEeqZ5oKvyNyC6Q" name="S_ALL_Class_encapsulates_edge_DELETE_LB_REPAIR" description="Deletes a node in all allowed metamodel contexts">
+  <imports href="architectureCRA.ecore#/"/>
+  <units xsi:type="henshin:Rule" xmi:id="_MkDSsYVIEeqZ5oKvyNyC6Q" name="deleteClass_IN_ClassModel" description="deletes one Class in the context: ClassModel">
+    <parameters xmi:id="_MkDSsoVIEeqZ5oKvyNyC6Q" name="Selected">
+      <type xsi:type="ecore:EClass" href="architectureCRA.ecore#//ClassModel"/>
+    </parameters>
+    <parameters xmi:id="_MkDSs4VIEeqZ5oKvyNyC6Q" name="Existing">
+      <type xsi:type="ecore:EClass" href="architectureCRA.ecore#//Feature"/>
+    </parameters>
+    <parameters xmi:id="_MkDStIVIEeqZ5oKvyNyC6Q" name="NewTarget">
+      <type xsi:type="ecore:EClass" href="architectureCRA.ecore#//Class"/>
+    </parameters>
+    <parameters xmi:id="_MkDStYVIEeqZ5oKvyNyC6Q" name="New">
+      <type xsi:type="ecore:EClass" href="architectureCRA.ecore#//Class"/>
+    </parameters>
+    <parameters xmi:id="_MkDStoVIEeqZ5oKvyNyC6Q" name="Name">
+      <type xsi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    </parameters>
+    <lhs xmi:id="_MkDSt4VIEeqZ5oKvyNyC6Q" name="LHS">
+      <nodes xmi:id="_MkDSuIVIEeqZ5oKvyNyC6Q" name="Selected" outgoing="_MkDSvIVIEeqZ5oKvyNyC6Q">
+        <type href="architectureCRA.ecore#//ClassModel"/>
+      </nodes>
+      <nodes xmi:id="_MkDSuYVIEeqZ5oKvyNyC6Q" name="New" incoming="_MkDSvIVIEeqZ5oKvyNyC6Q _MkDSvoVIEeqZ5oKvyNyC6Q" outgoing="_MkDSvYVIEeqZ5oKvyNyC6Q">
+        <type href="architectureCRA.ecore#//Class"/>
+      </nodes>
+      <nodes xmi:id="_MkDSuoVIEeqZ5oKvyNyC6Q" name="Existing" incoming="_MkDSvYVIEeqZ5oKvyNyC6Q" outgoing="_MkDSvoVIEeqZ5oKvyNyC6Q">
+        <type href="architectureCRA.ecore#//Feature"/>
+      </nodes>
+      <nodes xmi:id="_MkDSu4VIEeqZ5oKvyNyC6Q" name="NewTarget">
+        <type href="architectureCRA.ecore#//Class"/>
+      </nodes>
+      <edges xmi:id="_MkDSvIVIEeqZ5oKvyNyC6Q" source="_MkDSuIVIEeqZ5oKvyNyC6Q" target="_MkDSuYVIEeqZ5oKvyNyC6Q">
+        <type href="architectureCRA.ecore#//ClassModel/classes"/>
+      </edges>
+      <edges xmi:id="_MkDSvYVIEeqZ5oKvyNyC6Q" source="_MkDSuYVIEeqZ5oKvyNyC6Q" target="_MkDSuoVIEeqZ5oKvyNyC6Q">
+        <type href="architectureCRA.ecore#//Class/encapsulates"/>
+      </edges>
+      <edges xmi:id="_MkDSvoVIEeqZ5oKvyNyC6Q" source="_MkDSuoVIEeqZ5oKvyNyC6Q" target="_MkDSuYVIEeqZ5oKvyNyC6Q">
+        <type href="architectureCRA.ecore#//Feature/isEncapsulatedBy"/>
+      </edges>
+    </lhs>
+    <rhs xmi:id="_MkDSv4VIEeqZ5oKvyNyC6Q" name="RHS">
+      <nodes xmi:id="_MkDSwIVIEeqZ5oKvyNyC6Q" name="Selected">
+        <type href="architectureCRA.ecore#//ClassModel"/>
+      </nodes>
+      <nodes xmi:id="_MkDSwYVIEeqZ5oKvyNyC6Q" name="Existing" incoming="_MkDSw4VIEeqZ5oKvyNyC6Q" outgoing="_MkDSxIVIEeqZ5oKvyNyC6Q">
+        <type href="architectureCRA.ecore#//Feature"/>
+      </nodes>
+      <nodes xmi:id="_MkDSwoVIEeqZ5oKvyNyC6Q" name="NewTarget" incoming="_MkDSxIVIEeqZ5oKvyNyC6Q" outgoing="_MkDSw4VIEeqZ5oKvyNyC6Q">
+        <type href="architectureCRA.ecore#//Class"/>
+      </nodes>
+      <edges xmi:id="_MkDSw4VIEeqZ5oKvyNyC6Q" source="_MkDSwoVIEeqZ5oKvyNyC6Q" target="_MkDSwYVIEeqZ5oKvyNyC6Q">
+        <type href="architectureCRA.ecore#//Class/encapsulates"/>
+      </edges>
+      <edges xmi:id="_MkDSxIVIEeqZ5oKvyNyC6Q" source="_MkDSwYVIEeqZ5oKvyNyC6Q" target="_MkDSwoVIEeqZ5oKvyNyC6Q">
+        <type href="architectureCRA.ecore#//Feature/isEncapsulatedBy"/>
+      </edges>
+    </rhs>
+    <mappings xmi:id="_MkDSxYVIEeqZ5oKvyNyC6Q" origin="_MkDSuIVIEeqZ5oKvyNyC6Q" image="_MkDSwIVIEeqZ5oKvyNyC6Q"/>
+    <mappings xmi:id="_MkDSxoVIEeqZ5oKvyNyC6Q" origin="_MkDSuoVIEeqZ5oKvyNyC6Q" image="_MkDSwYVIEeqZ5oKvyNyC6Q"/>
+    <mappings xmi:id="_MkDSx4VIEeqZ5oKvyNyC6Q" origin="_MkDSu4VIEeqZ5oKvyNyC6Q" image="_MkDSwoVIEeqZ5oKvyNyC6Q"/>
+  </units>
+</henshin:Module>

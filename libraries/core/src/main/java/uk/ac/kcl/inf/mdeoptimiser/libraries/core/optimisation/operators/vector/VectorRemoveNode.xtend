@@ -25,16 +25,17 @@ class VectorRemoveNode implements VectorMutationOperator {
 	}
 	
 	override mutate(VectorEObject veo) {
-		switch this.condition {
-			case "empty": {
-				deleteRandomEmpty(veo)
-				
-			} 
-			default :{
-				randomDelete(veo)
-				
+		if (veo.getGene.size != 0) {
+			switch this.condition {
+				case "empty": {
+					deleteRandomEmpty(veo)
+				} 
+				default :{
+					randomDelete(veo)		
+				}
 			}
 		}
+		
 	}
 	
 	def EList<EObject> getNodeList (EObject model) {
@@ -68,10 +69,10 @@ class VectorRemoveNode implements VectorMutationOperator {
 			val entry = itr.next
 			if (!gene.contains(entry.value)) {
 				val toRemove = entry.getKey as DynamicEObjectImpl
-				veo.deleteVectorObject(toRemove)
-				return true
+				if (veo.deleteVectorObject(toRemove)) {
+					return true
+				}	
 			}
-			
 		}
 		println("Remove operator returning false")
 		return false

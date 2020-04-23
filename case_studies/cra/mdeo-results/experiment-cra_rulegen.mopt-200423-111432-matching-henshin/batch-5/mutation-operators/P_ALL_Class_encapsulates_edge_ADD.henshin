@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="ASCII"?>
+<henshin:Module xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:henshin="http://www.eclipse.org/emf/2011/Henshin" xmi:id="_FiDo4IVDEeqRbri695IwqQ" name="P_ALL_Class_encapsulates_edge_ADD" description="Adds to Class edge of type encapsulates">
+  <imports href="architectureCRA.ecore#/"/>
+  <units xsi:type="henshin:Rule" xmi:id="_FiDo4YVDEeqRbri695IwqQ" name="addToClass_encapsulates_Feature" description="Adds to Class's reference encapsulates the target Feature">
+    <lhs xmi:id="_FiDo4oVDEeqRbri695IwqQ" name="Lhs">
+      <nodes xmi:id="_FiDo44VDEeqRbri695IwqQ" name="Selected">
+        <type href="architectureCRA.ecore#//Class"/>
+      </nodes>
+      <nodes xmi:id="_FiDo5IVDEeqRbri695IwqQ" name="NewTarget">
+        <type href="architectureCRA.ecore#//Feature"/>
+      </nodes>
+      <formula xsi:type="henshin:And" xmi:id="_FiDo5YVDEeqRbri695IwqQ">
+        <left xsi:type="henshin:Not" xmi:id="_FiDo5oVDEeqRbri695IwqQ">
+          <child xsi:type="henshin:NestedCondition" xmi:id="_FiDo54VDEeqRbri695IwqQ">
+            <conclusion xmi:id="_FiDo6IVDEeqRbri695IwqQ" name="Feature_ub0">
+              <nodes xmi:id="_FiDo6YVDEeqRbri695IwqQ" name="" outgoing="_FiDo64VDEeqRbri695IwqQ">
+                <type href="architectureCRA.ecore#//Feature"/>
+              </nodes>
+              <nodes xmi:id="_FiDo6oVDEeqRbri695IwqQ" name="" incoming="_FiDo64VDEeqRbri695IwqQ">
+                <type href="architectureCRA.ecore#//Class"/>
+              </nodes>
+              <edges xmi:id="_FiDo64VDEeqRbri695IwqQ" source="_FiDo6YVDEeqRbri695IwqQ" target="_FiDo6oVDEeqRbri695IwqQ">
+                <type href="architectureCRA.ecore#//Feature/isEncapsulatedBy"/>
+              </edges>
+            </conclusion>
+            <mappings xmi:id="_FiDo7IVDEeqRbri695IwqQ" origin="_FiDo5IVDEeqRbri695IwqQ" image="_FiDo6YVDEeqRbri695IwqQ"/>
+          </child>
+        </left>
+        <right xsi:type="henshin:Not" xmi:id="_FiDo7YVDEeqRbri695IwqQ">
+          <child xsi:type="henshin:NestedCondition" xmi:id="_FiDo7oVDEeqRbri695IwqQ">
+            <conclusion xmi:id="_FiDo74VDEeqRbri695IwqQ" name="edgeub">
+              <nodes xmi:id="_FiDo8IVDEeqRbri695IwqQ" name="" outgoing="_FiDo8oVDEeqRbri695IwqQ">
+                <type href="architectureCRA.ecore#//Class"/>
+              </nodes>
+              <nodes xmi:id="_FiDo8YVDEeqRbri695IwqQ" name="" incoming="_FiDo8oVDEeqRbri695IwqQ">
+                <type href="architectureCRA.ecore#//Feature"/>
+              </nodes>
+              <edges xmi:id="_FiDo8oVDEeqRbri695IwqQ" source="_FiDo8IVDEeqRbri695IwqQ" target="_FiDo8YVDEeqRbri695IwqQ">
+                <type href="architectureCRA.ecore#//Class/encapsulates"/>
+              </edges>
+            </conclusion>
+            <mappings xmi:id="_FiDo84VDEeqRbri695IwqQ" origin="_FiDo44VDEeqRbri695IwqQ" image="_FiDo8IVDEeqRbri695IwqQ"/>
+            <mappings xmi:id="_FiDo9IVDEeqRbri695IwqQ" origin="_FiDo5IVDEeqRbri695IwqQ" image="_FiDo8YVDEeqRbri695IwqQ"/>
+          </child>
+        </right>
+      </formula>
+    </lhs>
+    <rhs xmi:id="_FiDo9YVDEeqRbri695IwqQ" name="Rhs">
+      <nodes xmi:id="_FiDo9oVDEeqRbri695IwqQ" name="Selected" incoming="_FiDo-YVDEeqRbri695IwqQ" outgoing="_FiDo-IVDEeqRbri695IwqQ">
+        <type href="architectureCRA.ecore#//Class"/>
+      </nodes>
+      <nodes xmi:id="_FiDo94VDEeqRbri695IwqQ" name="NewTarget" incoming="_FiDo-IVDEeqRbri695IwqQ" outgoing="_FiDo-YVDEeqRbri695IwqQ">
+        <type href="architectureCRA.ecore#//Feature"/>
+      </nodes>
+      <edges xmi:id="_FiDo-IVDEeqRbri695IwqQ" source="_FiDo9oVDEeqRbri695IwqQ" target="_FiDo94VDEeqRbri695IwqQ">
+        <type href="architectureCRA.ecore#//Class/encapsulates"/>
+      </edges>
+      <edges xmi:id="_FiDo-YVDEeqRbri695IwqQ" source="_FiDo94VDEeqRbri695IwqQ" target="_FiDo9oVDEeqRbri695IwqQ">
+        <type href="architectureCRA.ecore#//Feature/isEncapsulatedBy"/>
+      </edges>
+    </rhs>
+    <mappings xmi:id="_FiDo-oVDEeqRbri695IwqQ" origin="_FiDo44VDEeqRbri695IwqQ" image="_FiDo9oVDEeqRbri695IwqQ"/>
+    <mappings xmi:id="_FiDo-4VDEeqRbri695IwqQ" origin="_FiDo5IVDEeqRbri695IwqQ" image="_FiDo94VDEeqRbri695IwqQ"/>
+  </units>
+</henshin:Module>

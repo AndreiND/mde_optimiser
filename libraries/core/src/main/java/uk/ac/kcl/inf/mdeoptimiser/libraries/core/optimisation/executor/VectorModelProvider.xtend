@@ -37,8 +37,9 @@ class VectorModelProvider implements IModelProvider {
 		
 		
 		if(this.modelInitialiser !== null){
-			return modelInitialiser.initialise(resource.allContents.head)
+			return modelInitialiser.initialise(vectorConverter.convert(resource.allContents.head))
 		}
+		
 		return new Solution(vectorConverter.convert(resource.allContents.head))
 	}
 

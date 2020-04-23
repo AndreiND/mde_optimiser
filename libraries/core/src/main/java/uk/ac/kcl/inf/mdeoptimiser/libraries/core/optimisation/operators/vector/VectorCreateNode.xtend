@@ -22,4 +22,5 @@ class VectorCreateNode implements VectorMutationOperator {
 	override getName() {
 		return name
 	}
+
 }

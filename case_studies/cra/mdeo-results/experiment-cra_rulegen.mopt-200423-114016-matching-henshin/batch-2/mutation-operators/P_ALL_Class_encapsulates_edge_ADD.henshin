@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="ASCII"?>
+<henshin:Module xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:henshin="http://www.eclipse.org/emf/2011/Henshin" xmi:id="_QOeLcIVHEeqcCqJ0Yp8RLg" name="P_ALL_Class_encapsulates_edge_ADD" description="Adds to Class edge of type encapsulates">
+  <imports href="architectureCRA.ecore#/"/>
+  <units xsi:type="henshin:Rule" xmi:id="_QOeLcYVHEeqcCqJ0Yp8RLg" name="addToClass_encapsulates_Feature" description="Adds to Class's reference encapsulates the target Feature">
+    <lhs xmi:id="_QOeLcoVHEeqcCqJ0Yp8RLg" name="Lhs">
+      <nodes xmi:id="_QOeLc4VHEeqcCqJ0Yp8RLg" name="Selected">
+        <type href="architectureCRA.ecore#//Class"/>
+      </nodes>
+      <nodes xmi:id="_QOeLdIVHEeqcCqJ0Yp8RLg" name="NewTarget">
+        <type href="architectureCRA.ecore#//Feature"/>
+      </nodes>
+      <formula xsi:type="henshin:And" xmi:id="_QOeLdYVHEeqcCqJ0Yp8RLg">
+        <left xsi:type="henshin:Not" xmi:id="_QOeLdoVHEeqcCqJ0Yp8RLg">
+          <child xsi:type="henshin:NestedCondition" xmi:id="_QOeLd4VHEeqcCqJ0Yp8RLg">
+            <conclusion xmi:id="_QOeLeIVHEeqcCqJ0Yp8RLg" name="Feature_ub0">
+              <nodes xmi:id="_QOeLeYVHEeqcCqJ0Yp8RLg" name="" outgoing="_QOeLe4VHEeqcCqJ0Yp8RLg">
+                <type href="architectureCRA.ecore#//Feature"/>
+              </nodes>
+              <nodes xmi:id="_QOeLeoVHEeqcCqJ0Yp8RLg" name="" incoming="_QOeLe4VHEeqcCqJ0Yp8RLg">
+                <type href="architectureCRA.ecore#//Class"/>
+              </nodes>
+              <edges xmi:id="_QOeLe4VHEeqcCqJ0Yp8RLg" source="_QOeLeYVHEeqcCqJ0Yp8RLg" target="_QOeLeoVHEeqcCqJ0Yp8RLg">
+                <type href="architectureCRA.ecore#//Feature/isEncapsulatedBy"/>
+              </edges>
+            </conclusion>
+            <mappings xmi:id="_QOeLfIVHEeqcCqJ0Yp8RLg" origin="_QOeLdIVHEeqcCqJ0Yp8RLg" image="_QOeLeYVHEeqcCqJ0Yp8RLg"/>
+          </child>
+        </left>
+        <right xsi:type="henshin:Not" xmi:id="_QOeLfYVHEeqcCqJ0Yp8RLg">
+          <child xsi:type="henshin:NestedCondition" xmi:id="_QOeLfoVHEeqcCqJ0Yp8RLg">
+            <conclusion xmi:id="_QOeLf4VHEeqcCqJ0Yp8RLg" name="edgeub">
+              <nodes xmi:id="_QOeLgIVHEeqcCqJ0Yp8RLg" name="" outgoing="_QOeLgoVHEeqcCqJ0Yp8RLg">
+                <type href="architectureCRA.ecore#//Class"/>
+              </nodes>
+              <nodes xmi:id="_QOeLgYVHEeqcCqJ0Yp8RLg" name="" incoming="_QOeLgoVHEeqcCqJ0Yp8RLg">
+                <type href="architectureCRA.ecore#//Feature"/>
+              </nodes>
+              <edges xmi:id="_QOeLgoVHEeqcCqJ0Yp8RLg" source="_QOeLgIVHEeqcCqJ0Yp8RLg" target="_QOeLgYVHEeqcCqJ0Yp8RLg">
+                <type href="architectureCRA.ecore#//Class/encapsulates"/>
+              </edges>
+            </conclusion>
+            <mappings xmi:id="_QOeLg4VHEeqcCqJ0Yp8RLg" origin="_QOeLc4VHEeqcCqJ0Yp8RLg" image="_QOeLgIVHEeqcCqJ0Yp8RLg"/>
+            <mappings xmi:id="_QOeLhIVHEeqcCqJ0Yp8RLg" origin="_QOeLdIVHEeqcCqJ0Yp8RLg" image="_QOeLgYVHEeqcCqJ0Yp8RLg"/>
+          </child>
+        </right>
+      </formula>
+    </lhs>
+    <rhs xmi:id="_QOeLhYVHEeqcCqJ0Yp8RLg" name="Rhs">
+      <nodes xmi:id="_QOeLhoVHEeqcCqJ0Yp8RLg" name="Selected" incoming="_QOeLiYVHEeqcCqJ0Yp8RLg" outgoing="_QOeLiIVHEeqcCqJ0Yp8RLg">
+        <type href="architectureCRA.ecore#//Class"/>
+      </nodes>
+      <nodes xmi:id="_QOeLh4VHEeqcCqJ0Yp8RLg" name="NewTarget" incoming="_QOeLiIVHEeqcCqJ0Yp8RLg" outgoing="_QOeLiYVHEeqcCqJ0Yp8RLg">
+        <type href="architectureCRA.ecore#//Feature"/>
+      </nodes>
+      <edges xmi:id="_QOeLiIVHEeqcCqJ0Yp8RLg" source="_QOeLhoVHEeqcCqJ0Yp8RLg" target="_QOeLh4VHEeqcCqJ0Yp8RLg">
+        <type href="architectureCRA.ecore#//Class/encapsulates"/>
+      </edges>
+      <edges xmi:id="_QOeLiYVHEeqcCqJ0Yp8RLg" source="_QOeLh4VHEeqcCqJ0Yp8RLg" target="_QOeLhoVHEeqcCqJ0Yp8RLg">
+        <type href="architectureCRA.ecore#//Feature/isEncapsulatedBy"/>
+      </edges>
+    </rhs>
+    <mappings xmi:id="_QOeLioVHEeqcCqJ0Yp8RLg" origin="_QOeLc4VHEeqcCqJ0Yp8RLg" image="_QOeLhoVHEeqcCqJ0Yp8RLg"/>
+    <mappings xmi:id="_QOeLi4VHEeqcCqJ0Yp8RLg" origin="_QOeLdIVHEeqcCqJ0Yp8RLg" image="_QOeLh4VHEeqcCqJ0Yp8RLg"/>
+  </units>
+</henshin:Module>

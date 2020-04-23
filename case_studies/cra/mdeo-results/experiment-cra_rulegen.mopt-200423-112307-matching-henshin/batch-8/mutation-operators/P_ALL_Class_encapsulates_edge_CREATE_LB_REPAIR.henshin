@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="ASCII"?>
+<henshin:Module xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:henshin="http://www.eclipse.org/emf/2011/Henshin" xmi:id="_bn8sgIVEEeqfr_qHgnEVCw" name="P_ALL_Class_encapsulates_edge_CREATE_LB_REPAIR" description="Creates a node in all allowed metamodel contexts">
+  <imports href="architectureCRA.ecore#/"/>
+  <units xsi:type="henshin:Rule" xmi:id="_bn8sgYVEEeqfr_qHgnEVCw" name="createClass_IN_ClassModel" description="creates one Class in the context: ClassModel">
+    <parameters xmi:id="_bn8sgoVEEeqfr_qHgnEVCw" name="Selected">
+      <type xsi:type="ecore:EClass" href="architectureCRA.ecore#//ClassModel"/>
+    </parameters>
+    <parameters xmi:id="_bn8sg4VEEeqfr_qHgnEVCw" name="Existing">
+      <type xsi:type="ecore:EClass" href="architectureCRA.ecore#//Feature"/>
+    </parameters>
+    <parameters xmi:id="_bn8shIVEEeqfr_qHgnEVCw" name="NewTarget">
+      <type xsi:type="ecore:EClass" href="architectureCRA.ecore#//Class"/>
+    </parameters>
+    <parameters xmi:id="_bn8shYVEEeqfr_qHgnEVCw" name="New">
+      <type xsi:type="ecore:EClass" href="architectureCRA.ecore#//Class"/>
+    </parameters>
+    <parameters xmi:id="_bn8shoVEEeqfr_qHgnEVCw" name="Name">
+      <type xsi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    </parameters>
+    <lhs xmi:id="_bn8sh4VEEeqfr_qHgnEVCw" name="Lhs">
+      <nodes xmi:id="_bn8siIVEEeqfr_qHgnEVCw" name="Selected">
+        <type href="architectureCRA.ecore#//ClassModel"/>
+      </nodes>
+      <nodes xmi:id="_bn8siYVEEeqfr_qHgnEVCw" name="Existing" incoming="_bn8si4VEEeqfr_qHgnEVCw" outgoing="_bn8sjIVEEeqfr_qHgnEVCw">
+        <type href="architectureCRA.ecore#//Feature"/>
+      </nodes>
+      <nodes xmi:id="_bn8sioVEEeqfr_qHgnEVCw" name="NewTarget" incoming="_bn8sjIVEEeqfr_qHgnEVCw" outgoing="_bn8si4VEEeqfr_qHgnEVCw">
+        <type href="architectureCRA.ecore#//Class"/>
+      </nodes>
+      <edges xmi:id="_bn8si4VEEeqfr_qHgnEVCw" source="_bn8sioVEEeqfr_qHgnEVCw" target="_bn8siYVEEeqfr_qHgnEVCw">
+        <type href="architectureCRA.ecore#//Class/encapsulates"/>
+      </edges>
+      <edges xmi:id="_bn8sjIVEEeqfr_qHgnEVCw" source="_bn8siYVEEeqfr_qHgnEVCw" target="_bn8sioVEEeqfr_qHgnEVCw">
+        <type href="architectureCRA.ecore#//Feature/isEncapsulatedBy"/>
+      </edges>
+      <formula xsi:type="henshin:NestedCondition" xmi:id="_bn8sjYVEEeqfr_qHgnEVCw">
+        <conclusion xmi:id="_bn8sjoVEEeqfr_qHgnEVCw" name="Class_lb0">
+          <nodes xmi:id="_bn8sj4VEEeqfr_qHgnEVCw" name="" outgoing="_bn8skYVEEeqfr_qHgnEVCw">
+            <type href="architectureCRA.ecore#//Class"/>
+          </nodes>
+          <nodes xmi:id="_bn8skIVEEeqfr_qHgnEVCw" name="" incoming="_bn8skYVEEeqfr_qHgnEVCw">
+            <type href="architectureCRA.ecore#//Feature"/>
+          </nodes>
+          <edges xmi:id="_bn8skYVEEeqfr_qHgnEVCw" source="_bn8sj4VEEeqfr_qHgnEVCw" target="_bn8skIVEEeqfr_qHgnEVCw">
+            <type href="architectureCRA.ecore#//Class/encapsulates"/>
+          </edges>
+        </conclusion>
+        <mappings xmi:id="_bn8skoVEEeqfr_qHgnEVCw" origin="_bn8sioVEEeqfr_qHgnEVCw" image="_bn8sj4VEEeqfr_qHgnEVCw"/>
+      </formula>
+    </lhs>
+    <rhs xmi:id="_bn8sk4VEEeqfr_qHgnEVCw" name="Rhs">
+      <nodes xmi:id="_bn8slIVEEeqfr_qHgnEVCw" name="Selected" outgoing="_bn8smYVEEeqfr_qHgnEVCw">
+        <type href="architectureCRA.ecore#//ClassModel"/>
+      </nodes>
+      <nodes xmi:id="_bn8slYVEEeqfr_qHgnEVCw" name="New" incoming="_bn8smYVEEeqfr_qHgnEVCw _bn8sm4VEEeqfr_qHgnEVCw" outgoing="_bn8smoVEEeqfr_qHgnEVCw">
+        <type href="architectureCRA.ecore#//Class"/>
+        <attributes xmi:id="_bn8sloVEEeqfr_qHgnEVCw" value="Name">
+          <type href="architectureCRA.ecore#//NamedElement/name"/>
+        </attributes>
+      </nodes>
+      <nodes xmi:id="_bn8sl4VEEeqfr_qHgnEVCw" name="Existing" incoming="_bn8smoVEEeqfr_qHgnEVCw" outgoing="_bn8sm4VEEeqfr_qHgnEVCw">
+        <type href="architectureCRA.ecore#//Feature"/>
+      </nodes>
+      <nodes xmi:id="_bn8smIVEEeqfr_qHgnEVCw" name="NewTarget">
+        <type href="architectureCRA.ecore#//Class"/>
+      </nodes>
+      <edges xmi:id="_bn8smYVEEeqfr_qHgnEVCw" source="_bn8slIVEEeqfr_qHgnEVCw" target="_bn8slYVEEeqfr_qHgnEVCw">
+        <type href="architectureCRA.ecore#//ClassModel/classes"/>
+      </edges>
+      <edges xmi:id="_bn8smoVEEeqfr_qHgnEVCw" source="_bn8slYVEEeqfr_qHgnEVCw" target="_bn8sl4VEEeqfr_qHgnEVCw">
+        <type href="architectureCRA.ecore#//Class/encapsulates"/>
+      </edges>
+      <edges xmi:id="_bn8sm4VEEeqfr_qHgnEVCw" source="_bn8sl4VEEeqfr_qHgnEVCw" target="_bn8slYVEEeqfr_qHgnEVCw">
+        <type href="architectureCRA.ecore#//Feature/isEncapsulatedBy"/>
+      </edges>
+    </rhs>
+    <mappings xmi:id="_bn8snIVEEeqfr_qHgnEVCw" origin="_bn8siIVEEeqfr_qHgnEVCw" image="_bn8slIVEEeqfr_qHgnEVCw"/>
+    <mappings xmi:id="_bn8snYVEEeqfr_qHgnEVCw" origin="_bn8siYVEEeqfr_qHgnEVCw" image="_bn8sl4VEEeqfr_qHgnEVCw"/>
+    <mappings xmi:id="_bn8snoVEEeqfr_qHgnEVCw" origin="_bn8sioVEEeqfr_qHgnEVCw" image="_bn8smIVEEeqfr_qHgnEVCw"/>
+  </units>
+</henshin:Module>

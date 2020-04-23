@@ -9,12 +9,16 @@ goal {
 	objective MaximiseSatisfaction maximise java { "models.nrp.fitness.MaximiseSatisfaction" }
 }
 search {
-	mutate {"Solution","selectedArtifacts"}
+	mutate {"Solution"}
 }
 solver {
-	optimisation provider moea algorithm NSGAII variation mutation
-	parameters {
+	optimisation provider moea algorithm NSGAII {
+		variation:mutation
 		population: 100
+		mutation.step: 3
+		mutation.strategy: random
+		vector: yes
+		deleteCondition:none
 	}
 	termination {
 		time: 120

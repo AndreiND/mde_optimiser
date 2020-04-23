@@ -74,7 +74,6 @@ class VectorRandomOperatorMutationStrategy implements MutationStrategy {
 			do {
 				operator = this.randomSelector.getNextOperator
 				operatorApplied = operator.mutate(model)
-
 			} while (!operatorApplied && randomSelector.hasUntriedOperators)
 		}
 	}
@@ -112,6 +111,5 @@ class VectorRandomOperatorMutationStrategy implements MutationStrategy {
 			}
 		}
 	}
-
 }
 

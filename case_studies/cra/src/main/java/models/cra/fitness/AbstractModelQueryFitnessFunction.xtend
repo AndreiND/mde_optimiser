@@ -34,11 +34,14 @@ abstract class AbstractModelQueryFitnessFunction implements IGuidanceFunction {
 		var features = new BasicEList<EObject>();
 			
 		if(object instanceof EObject){
-					features.add(object)
+			features.add(object)
 		} else {
 			features = object as BasicEList<EObject>;
 		}
-		
+
+		if (features === null) {
+			return new BasicEList<EObject>();
+		}
 		features.filter[ feature | feature.eClass.name.equals (element)] 
 	}
 }

@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="ASCII"?>
+<henshin:Module xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:henshin="http://www.eclipse.org/emf/2011/Henshin" xmi:id="_maWQYIVKEeq3a5mpPkNkEQ" name="P_ALL_Class_encapsulates_edge_CREATE" description="Creates a node in all allowed metamodel contexts">
+  <imports href="architectureCRA.ecore#/"/>
+  <units xsi:type="henshin:Rule" xmi:id="_maWQYYVKEeq3a5mpPkNkEQ" name="createClass_IN_ClassModel" description="creates one Class in the context: ClassModel">
+    <parameters xmi:id="_maWQYoVKEeq3a5mpPkNkEQ" name="Selected">
+      <type xsi:type="ecore:EClass" href="architectureCRA.ecore#//ClassModel"/>
+    </parameters>
+    <parameters xmi:id="_maWQY4VKEeq3a5mpPkNkEQ" name="Existing">
+      <type xsi:type="ecore:EClass" href="architectureCRA.ecore#//Feature"/>
+    </parameters>
+    <parameters xmi:id="_maWQZIVKEeq3a5mpPkNkEQ" name="New">
+      <type xsi:type="ecore:EClass" href="architectureCRA.ecore#//Class"/>
+    </parameters>
+    <parameters xmi:id="_maWQZYVKEeq3a5mpPkNkEQ" name="Name">
+      <type xsi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    </parameters>
+    <lhs xmi:id="_maWQZoVKEeq3a5mpPkNkEQ" name="Lhs">
+      <nodes xmi:id="_maWQZ4VKEeq3a5mpPkNkEQ" name="Selected">
+        <type href="architectureCRA.ecore#//ClassModel"/>
+      </nodes>
+      <nodes xmi:id="_maWQaIVKEeq3a5mpPkNkEQ" name="Existing">
+        <type href="architectureCRA.ecore#//Feature"/>
+      </nodes>
+      <formula xsi:type="henshin:Not" xmi:id="_maWQaYVKEeq3a5mpPkNkEQ">
+        <child xsi:type="henshin:NestedCondition" xmi:id="_maWQaoVKEeq3a5mpPkNkEQ">
+          <conclusion xmi:id="_maWQa4VKEeq3a5mpPkNkEQ" name="Feature_ub0">
+            <nodes xmi:id="_maWQbIVKEeq3a5mpPkNkEQ" name="" outgoing="_maWQboVKEeq3a5mpPkNkEQ">
+              <type href="architectureCRA.ecore#//Feature"/>
+            </nodes>
+            <nodes xmi:id="_maWQbYVKEeq3a5mpPkNkEQ" name="" incoming="_maWQboVKEeq3a5mpPkNkEQ">
+              <type href="architectureCRA.ecore#//Class"/>
+            </nodes>
+            <edges xmi:id="_maWQboVKEeq3a5mpPkNkEQ" source="_maWQbIVKEeq3a5mpPkNkEQ" target="_maWQbYVKEeq3a5mpPkNkEQ">
+              <type href="architectureCRA.ecore#//Feature/isEncapsulatedBy"/>
+            </edges>
+          </conclusion>
+          <mappings xmi:id="_maWQb4VKEeq3a5mpPkNkEQ" origin="_maWQaIVKEeq3a5mpPkNkEQ" image="_maWQbIVKEeq3a5mpPkNkEQ"/>
+        </child>
+      </formula>
+    </lhs>
+    <rhs xmi:id="_maWQcIVKEeq3a5mpPkNkEQ" name="Rhs">
+      <nodes xmi:id="_maWQcYVKEeq3a5mpPkNkEQ" name="Selected" outgoing="_maWQdYVKEeq3a5mpPkNkEQ">
+        <type href="architectureCRA.ecore#//ClassModel"/>
+      </nodes>
+      <nodes xmi:id="_maWQcoVKEeq3a5mpPkNkEQ" name="New" incoming="_maWQdYVKEeq3a5mpPkNkEQ _maWQd4VKEeq3a5mpPkNkEQ" outgoing="_maWQdoVKEeq3a5mpPkNkEQ">
+        <type href="architectureCRA.ecore#//Class"/>
+        <attributes xmi:id="_maWQc4VKEeq3a5mpPkNkEQ" value="Name">
+          <type href="architectureCRA.ecore#//NamedElement/name"/>
+        </attributes>
+      </nodes>
+      <nodes xmi:id="_maWQdIVKEeq3a5mpPkNkEQ" name="Existing" incoming="_maWQdoVKEeq3a5mpPkNkEQ" outgoing="_maWQd4VKEeq3a5mpPkNkEQ">
+        <type href="architectureCRA.ecore#//Feature"/>
+      </nodes>
+      <edges xmi:id="_maWQdYVKEeq3a5mpPkNkEQ" source="_maWQcYVKEeq3a5mpPkNkEQ" target="_maWQcoVKEeq3a5mpPkNkEQ">
+        <type href="architectureCRA.ecore#//ClassModel/classes"/>
+      </edges>
+      <edges xmi:id="_maWQdoVKEeq3a5mpPkNkEQ" source="_maWQcoVKEeq3a5mpPkNkEQ" target="_maWQdIVKEeq3a5mpPkNkEQ">
+        <type href="architectureCRA.ecore#//Class/encapsulates"/>
+      </edges>
+      <edges xmi:id="_maWQd4VKEeq3a5mpPkNkEQ" source="_maWQdIVKEeq3a5mpPkNkEQ" target="_maWQcoVKEeq3a5mpPkNkEQ">
+        <type href="architectureCRA.ecore#//Feature/isEncapsulatedBy"/>
+      </edges>
+    </rhs>
+    <mappings xmi:id="_maWQeIVKEeq3a5mpPkNkEQ" origin="_maWQZ4VKEeq3a5mpPkNkEQ" image="_maWQcYVKEeq3a5mpPkNkEQ"/>
+    <mappings xmi:id="_maWQeYVKEeq3a5mpPkNkEQ" origin="_maWQaIVKEeq3a5mpPkNkEQ" image="_maWQdIVKEeq3a5mpPkNkEQ"/>
+  </units>
+</henshin:Module>

@@ -1,0 +1,17 @@
+
+============================================
+
+Batch 3 duration: 00:00:19.113
+
+--------------------------------------------
+Evaluation data for solution: /home/andrei/eclipse-workspace/mde_optimiser/case_studies/cra/mdeo-results/experiment-cra_rulegen.mopt-200423-112307-matching-henshin/batch-336ECB517.xmi
+
+Objective values:
+CRA: -3.083333333333333
+
+Constraint values:
+MinimiseClasslessFeatures: 0.0
+
+
+============================================
+

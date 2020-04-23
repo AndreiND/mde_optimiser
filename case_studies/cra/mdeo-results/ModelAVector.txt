@@ -1,0 +1,204 @@
+Average experiment time: 00:00:08.789
+
+Average value for CRA objective: -2.4166666666666665
+============================================
+
+============================================
+
+Batch 0 duration: 00:00:11.324
+
+--------------------------------------------
+Evaluation data for solution: /home/andrei/eclipse-workspace/mde_optimiser/case_studies/cra/mdeo-results/experiment-cra_rulegen.mopt-200423-111432-matching-henshin/batch-077EB8A58.xmi
+
+Objective values:
+CRA: -1.8333333333333333
+
+Constraint values:
+MinimiseClasslessFeatures: 0.0
+
+
+============================================
+
+Serialized objectives saved to: /home/andrei/eclipse-workspace/mde_optimiser/case_studies/cra/mdeo-results/experiment-cra_rulegen.mopt-200423-111432-matching-henshin/batch-0/batch-0-serialized-objectives.pf
+============================================
+============================================
+
+============================================
+
+Batch 1 duration: 00:00:13.172
+
+--------------------------------------------
+Evaluation data for solution: /home/andrei/eclipse-workspace/mde_optimiser/case_studies/cra/mdeo-results/experiment-cra_rulegen.mopt-200423-111432-matching-henshin/batch-173E665BE.xmi
+
+Objective values:
+CRA: -3.0
+
+Constraint values:
+MinimiseClasslessFeatures: 0.0
+
+
+============================================
+
+Serialized objectives saved to: /home/andrei/eclipse-workspace/mde_optimiser/case_studies/cra/mdeo-results/experiment-cra_rulegen.mopt-200423-111432-matching-henshin/batch-1/batch-1-serialized-objectives.pf
+============================================
+============================================
+
+============================================
+
+Batch 2 duration: 00:00:09.064
+
+--------------------------------------------
+Evaluation data for solution: /home/andrei/eclipse-workspace/mde_optimiser/case_studies/cra/mdeo-results/experiment-cra_rulegen.mopt-200423-111432-matching-henshin/batch-22E3D8B24.xmi
+
+Objective values:
+CRA: -3.0
+
+Constraint values:
+MinimiseClasslessFeatures: 0.0
+
+
+============================================
+
+Serialized objectives saved to: /home/andrei/eclipse-workspace/mde_optimiser/case_studies/cra/mdeo-results/experiment-cra_rulegen.mopt-200423-111432-matching-henshin/batch-2/batch-2-serialized-objectives.pf
+============================================
+============================================
+
+============================================
+
+Batch 3 duration: 00:00:09.076
+
+--------------------------------------------
+Evaluation data for solution: /home/andrei/eclipse-workspace/mde_optimiser/case_studies/cra/mdeo-results/experiment-cra_rulegen.mopt-200423-111432-matching-henshin/batch-359908BD1.xmi
+
+Objective values:
+CRA: -1.8333333333333333
+
+Constraint values:
+MinimiseClasslessFeatures: 0.0
+
+
+============================================
+
+Serialized objectives saved to: /home/andrei/eclipse-workspace/mde_optimiser/case_studies/cra/mdeo-results/experiment-cra_rulegen.mopt-200423-111432-matching-henshin/batch-3/batch-3-serialized-objectives.pf
+============================================
+============================================
+
+============================================
+
+Batch 4 duration: 00:00:10.849
+
+--------------------------------------------
+Evaluation data for solution: /home/andrei/eclipse-workspace/mde_optimiser/case_studies/cra/mdeo-results/experiment-cra_rulegen.mopt-200423-111432-matching-henshin/batch-42E3E17CA.xmi
+
+Objective values:
+CRA: -3.0
+
+Constraint values:
+MinimiseClasslessFeatures: 0.0
+
+
+============================================
+
+Serialized objectives saved to: /home/andrei/eclipse-workspace/mde_optimiser/case_studies/cra/mdeo-results/experiment-cra_rulegen.mopt-200423-111432-matching-henshin/batch-4/batch-4-serialized-objectives.pf
+============================================
+============================================
+
+============================================
+
+Batch 5 duration: 00:00:07.524
+
+--------------------------------------------
+Evaluation data for solution: /home/andrei/eclipse-workspace/mde_optimiser/case_studies/cra/mdeo-results/experiment-cra_rulegen.mopt-200423-111432-matching-henshin/batch-54AC65070.xmi
+
+Objective values:
+CRA: -1.8333333333333333
+
+Constraint values:
+MinimiseClasslessFeatures: 0.0
+
+
+============================================
+
+Serialized objectives saved to: /home/andrei/eclipse-workspace/mde_optimiser/case_studies/cra/mdeo-results/experiment-cra_rulegen.mopt-200423-111432-matching-henshin/batch-5/batch-5-serialized-objectives.pf
+============================================
+============================================
+
+============================================
+
+Batch 6 duration: 00:00:06.375
+
+--------------------------------------------
+Evaluation data for solution: /home/andrei/eclipse-workspace/mde_optimiser/case_studies/cra/mdeo-results/experiment-cra_rulegen.mopt-200423-111432-matching-henshin/batch-661B6626E.xmi
+
+Objective values:
+CRA: -3.0
+
+Constraint values:
+MinimiseClasslessFeatures: 0.0
+
+
+============================================
+
+Serialized objectives saved to: /home/andrei/eclipse-workspace/mde_optimiser/case_studies/cra/mdeo-results/experiment-cra_rulegen.mopt-200423-111432-matching-henshin/batch-6/batch-6-serialized-objectives.pf
+============================================
+============================================
+
+============================================
+
+Batch 7 duration: 00:00:05.485
+
+--------------------------------------------
+Evaluation data for solution: /home/andrei/eclipse-workspace/mde_optimiser/case_studies/cra/mdeo-results/experiment-cra_rulegen.mopt-200423-111432-matching-henshin/batch-7579C68F2.xmi
+
+Objective values:
+CRA: -1.8333333333333333
+
+Constraint values:
+MinimiseClasslessFeatures: 0.0
+
+
+============================================
+
+Serialized objectives saved to: /home/andrei/eclipse-workspace/mde_optimiser/case_studies/cra/mdeo-results/experiment-cra_rulegen.mopt-200423-111432-matching-henshin/batch-7/batch-7-serialized-objectives.pf
+============================================
+============================================
+
+============================================
+
+Batch 8 duration: 00:00:07.242
+
+--------------------------------------------
+Evaluation data for solution: /home/andrei/eclipse-workspace/mde_optimiser/case_studies/cra/mdeo-results/experiment-cra_rulegen.mopt-200423-111432-matching-henshin/batch-846BEA5B5.xmi
+
+Objective values:
+CRA: -1.8333333333333333
+
+Constraint values:
+MinimiseClasslessFeatures: 0.0
+
+
+============================================
+
+Serialized objectives saved to: /home/andrei/eclipse-workspace/mde_optimiser/case_studies/cra/mdeo-results/experiment-cra_rulegen.mopt-200423-111432-matching-henshin/batch-8/batch-8-serialized-objectives.pf
+============================================
+============================================
+
+============================================
+
+Batch 9 duration: 00:00:07.783
+
+--------------------------------------------
+Evaluation data for solution: /home/andrei/eclipse-workspace/mde_optimiser/case_studies/cra/mdeo-results/experiment-cra_rulegen.mopt-200423-111432-matching-henshin/batch-92D044D18.xmi
+
+Objective values:
+CRA: -3.0
+
+Constraint values:
+MinimiseClasslessFeatures: 0.0
+
+
+============================================
+
+Serialized objectives saved to: /home/andrei/eclipse-workspace/mde_optimiser/case_studies/cra/mdeo-results/experiment-cra_rulegen.mopt-200423-111432-matching-henshin/batch-9/batch-9-serialized-objectives.pf
+============================================
+
